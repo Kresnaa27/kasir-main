@@ -10,15 +10,14 @@ class Shift extends Model
     use HasFactory;
 
     protected $fillable = [
-        'user_id', 'start_time', 'end_time', 
-        'initial_cash', 'final_cash', 'status'
+        'name',
+        'shift',
+        'customers',
+        'total_sales',
+        'items_sold',
+        'date',
+        'status',
     ];
-
-    // Shift dimiliki oleh satu user (kasir)
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 
     // Satu shift bisa mencatat banyak transaksi
     public function transactions()

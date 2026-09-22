@@ -131,6 +131,22 @@
             border-color: #dc3545 !important;
             box-shadow: 0 2px 6px rgba(220, 53, 69, 0.3);
         }
+        /* Styling untuk kotak kembalian agar responsif */
+#changeOutputContainer {
+    word-break: break-word;
+    overflow: hidden;
+}
+#changeOutput {
+    font-size: 1.1rem !important; /* Ukuran font disesuaikan agar muat */
+    text-align: right;
+    display: inline-block;
+    max-width: 100%;
+}
+/* Styling Badge Shift Aktif Menyala */
+.badge-shift-active-pagi { background-color: #0dcaf0 !important; color: #000 !important; box-shadow: 0 0 10px rgba(13, 202, 240, 0.6); font-weight: bold; }
+.badge-shift-active-siang { background-color: #ffc107 !important; color: #000 !important; box-shadow: 0 0 10px rgba(255, 193, 7, 0.6); font-weight: bold; }
+.badge-shift-active-sore { background-color: #fd7e14 !important; color: #fff !important; box-shadow: 0 0 10px rgba(253, 126, 20, 0.6); font-weight: bold; }
+.badge-shift-inactive { background-color: #6c757d !important; color: #fff !important; opacity: 0.6; }
     </style>
 </head>
 <body>
@@ -308,13 +324,17 @@
                         <!-- Input Cash / Tunai -->
                         <div class="mb-3" id="cashPaymentSection">
                             <label class="form-label text-secondary small fw-semibold">Jumlah Uang Tunai (Rp)</label>
-                            <input type="number" id="cashInput" class="form-control fw-bold text-end" value="0" placeholder="0">
+                            <input type="text" id="cashInput" class="form-control fw-bold text-end" value="" placeholder="0" inputmode="numeric">
                         </div>
 
-                        <div class="mb-3 bg-light p-2 rounded-3 border d-flex justify-content-between align-items-center" id="changeSection">
-                            <span class="small text-secondary fw-semibold">Uang Kembalian:</span>
-                            <span class="fw-bold text-success fs-5" id="changeOutput">Rp 0</span>
-                        </div>
+                        <div class="mb-3 bg-light p-2 rounded-3 border d-flex flex-column" id="changeSection">
+    <div class="d-flex justify-content-between align-items-center mb-1">
+        <span class="small text-secondary fw-semibold">Uang Kembalian:</span>
+    </div>
+    <div class="text-end" id="changeOutputContainer">
+        <span class="fw-bold text-success" id="changeOutput" style="font-size: 1.1rem;">Rp 0</span>
+    </div>
+</div>
 
                         <div class="d-grid gap-2">
                             <button class="btn btn-danger py-2 fw-bold shadow-sm" id="processBtn">
@@ -437,6 +457,7 @@
     <!-- Script JavaScript -->
     <script>
     document.addEventListener("DOMContentLoaded", function() {
+    fetchShiftsData(); // Panggil fungsi untuk mengambil data shift saat halaman dimuat
         let products = [
             { id: 1, name: "Indomie Goreng Special", category: "makanan", price: 3500, stock: 18, img: "https://images.unsplash.com/photo-1612927601601-6638404738c2?w=300" },
             { id: 2, name: "Aqua 600ml", category: "minuman", price: 4000, stock: 24, img: "https://images.unsplash.com/photo-1548839140-29a749e1cf4c?w=300" },
@@ -446,12 +467,27 @@
             { id: 6, name: "Qtela Keripik Singkong", category: "snack", price: 9500, stock: 8, img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=300" }
         ];
 
-        let employeesData = [
-            { name: "Dewa", shift: "Shift Pagi", customers: 0, totalSales: 0, itemsSold: "Belum ada transaksi" },
-            { name: "Kresnaa", shift: "Shift Siang", customers: 0, totalSales: 0, itemsSold: "Belum mulai shift" },
-            { name: "Surya", shift: "Shift Sore", customers: 0, totalSales: 0, itemsSold: "Belum mulai shift" }
-        ];
+        // Deklarasi variabel penampung data shift awal kosong
+        let employeesData = [];
 
+        // Fungsi untuk mengambil data shift secara real-time dari database
+        function fetchShiftsData() {
+            fetch('/api/shifts-today')
+                .then(response => response.json())
+                .then(data => {
+                    // Sesuaikan key dari database jika diperlukan, lalu render ulang tabel
+                    employeesData = data.map(item => ({
+                        name: item.name,
+                        shift: item.shift,
+                        customers: item.customers,
+                        totalSales: parseFloat(item.total_sales),
+                        itemsSold: item.items_sold
+                    }));
+                    renderEmployeeHistory();
+                })
+                .catch(error => console.error('Gagal memuat data shift:', error));
+        }
+        
         let activeCashier = "Dewa";
         let activePaymentMethod = "cash";
         let cart = [];
@@ -577,20 +613,30 @@
 
         // Render Riwayat Pegawai ke Modal
         function renderEmployeeHistory() {
-            employeeHistoryBody.innerHTML = '';
-            employeesData.forEach(emp => {
-                let row = `
-                    <tr>
-                        <td class="fw-bold text-dark">${emp.name}</td>
-                        <td><span class="badge bg-secondary">${emp.shift}</span></td>
-                        <td class="text-center fw-bold">${emp.customers} Orang</td>
-                        <td class="fw-bold text-success">Rp ${emp.totalSales.toLocaleString('id-ID')}</td>
-                        <td class="text-muted small">${emp.itemsSold}</td>
-                    </tr>
-                `;
-                employeeHistoryBody.insertAdjacentHTML('beforeend', row);
-            });
+    employeeHistoryBody.innerHTML = '';
+    employeesData.forEach(emp => {
+        // Tentukan warna badge berdasarkan apakah pegawai tersebut adalah kasir aktif saat ini
+        let isActive = (emp.name === activeCashier);
+        let badgeClass = 'badge-shift-inactive';
+        
+        if (isActive) {
+            if (emp.shift.includes('Pagi')) badgeClass = 'badge-shift-active-pagi';
+            else if (emp.shift.includes('Siang')) badgeClass = 'badge-shift-active-siang';
+            else if (emp.shift.includes('Sore')) badgeClass = 'badge-shift-active-sore';
         }
+
+        let row = `
+            <tr>
+                <td class="fw-bold text-dark">${emp.name} ${isActive ? '<span class="badge bg-danger ms-1" style="font-size: 0.65rem;">Aktif</span>' : ''}</td>
+                <td><span class="badge rounded-pill px-3 py-2 ${badgeClass}">${emp.shift}</span></td>
+                <td class="text-center fw-bold">${emp.customers} Orang</td>
+                <td class="fw-bold text-success">Rp ${emp.totalSales.toLocaleString('id-ID')}</td>
+                <td class="text-muted small">${emp.itemsSold}</td>
+            </tr>
+        `;
+        employeeHistoryBody.insertAdjacentHTML('beforeend', row);
+    });
+}
 
         function addToCart(prodId) {
             let prod = products.find(p => p.id === prodId);
@@ -668,23 +714,41 @@
             });
         }
 
-        function calculateChange(total) {
-            if (activePaymentMethod !== 'cash') return;
-            let cash = parseInt(cashInput.value) || 0;
-            let change = cash - total;
-            if (change >= 0) {
-                changeOutput.innerText = 'Rp ' + change.toLocaleString('id-ID');
-                changeOutput.className = 'fw-bold text-success fs-5';
-            } else {
-                changeOutput.innerText = 'Kurang Rp ' + Math.abs(change).toLocaleString('id-ID');
-                changeOutput.className = 'fw-bold text-danger fs-6';
-            }
-        }
+       function calculateChange(cashAmount) {
+    if (activePaymentMethod !== 'cash') return;
+    let total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    let change = cashAmount - total;
+    
+    if (change >= 0) {
+        changeOutput.innerText = 'Rp ' + change.toLocaleString('id-ID');
+        changeOutput.className = 'fw-bold text-success';
+    } else {
+        changeOutput.innerText = 'Kurang Rp ' + Math.abs(change).toLocaleString('id-ID');
+        changeOutput.className = 'fw-bold text-danger';
+    }
+
+    // Penyesuaian ukuran font dinamis jika teks terlalu panjang
+    if (changeOutput.innerText.length > 15) {
+        changeOutput.style.fontSize = '0.95rem';
+    } else {
+        changeOutput.style.fontSize = '1.2rem';
+    }
+}
 
         cashInput.addEventListener('input', function() {
-            let total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            calculateChange(total);
-        });
+    let rawValue = this.value.replace(/[^0-9]/g, '');
+    
+    if (rawValue === '') {
+        this.value = '';
+        calculateChange(0);
+        return;
+    }
+
+    let numericValue = parseInt(rawValue, 10);
+    this.value = 'Rp ' + numericValue.toLocaleString('id-ID');
+
+    calculateChange(numericValue);
+});
 
         clearCartBtn.addEventListener('click', function() {
             cart.forEach(cartItem => {
@@ -699,45 +763,61 @@
 
         // Proses Transaksi & Catat Real-Time
         processBtn.addEventListener('click', function() {
-            if (cart.length === 0) {
-                alert('Keranjang masih kosong!');
-                return;
-            }
-            let total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    if (cart.length === 0) {
+        alert('Keranjang masih kosong!');
+        return;
+    }
+    
+    let total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+    
+    let cashRaw = cashInput.value.replace(/[^0-9]/g, '');
+    let cash = parseInt(cashRaw, 10) || 0;
 
-            if (activePaymentMethod === 'cash') {
-                let cash = parseInt(cashInput.value) || 0;
-                if (cash < total) {
-                    alert('Jumlah uang tunai kurang dari total tagihan!');
-                    return;
-                }
-            }
+    if (activePaymentMethod === 'cash') {
+        if (cash < total) {
+            alert('Jumlah uang tunai kurang dari total tagihan!');
+            return;
+        }
+    }
 
-            let now = new Date();
-            let timeString = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-            let dateString = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+    let now = new Date();
+    let timeString = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
+    let dateString = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
 
-            let emp = employeesData.find(e => e.name === activeCashier);
-            if (emp) {
-                emp.customers += 1;
-                emp.totalSales += total;
-                let summaryItems = cart.map(i => `${i.name} (${i.qty} pcs)`).join(', ');
-                let recordText = `[${dateString}, Pukul ${timeString} - ${activePaymentMethod.toUpperCase()}] ${summaryItems}`;
-                
-                if (emp.itemsSold === "Belum ada transaksi" || emp.itemsSold === "Belum mulai shift") {
-                    emp.itemsSold = recordText;
-                } else {
-                    emp.itemsSold += "<br>" + recordText;
-                }
-            }
+    let emp = employeesData.find(e => e.name === activeCashier);
+    if (emp) {
+        emp.customers += 1;
+        emp.totalSales += total;
+        
+        let summaryItems = cart.map(i => `${i.name} (${i.qty} pcs)`).join(', ');
+        
+        // Format baru dengan pembatas dan rincian Total Belanjaan agar lebih bersih dibaca
+        let recordText = `<b>[${dateString}, Pukul ${timeString} - ${activePaymentMethod.toUpperCase()}]</b><br>` +
+                         `• Barang: ${summaryItems}<br>` +
+                         `• Total Belanjaan: Rp ${total.toLocaleString('id-ID')}`;
+        
+        if (activePaymentMethod === 'cash') {
+            let changeAmount = cash - total;
+            recordText += `<br>• Uang Diberikan: Rp ${cash.toLocaleString('id-ID')}` +
+                          `<br>• Kembalian: Rp ${changeAmount.toLocaleString('id-ID')}`;
+        }
+        
+        if (emp.itemsSold === "Belum ada transaksi" || emp.itemsSold === "Belum mulai shift") {
+            emp.itemsSold = recordText;
+        } else {
+            // Ditambah garis pembatas <hr class="my-2"> agar antar transaksi tidak menumpuk
+            emp.itemsSold += `<hr class="my-2 text-muted" style="opacity: 0.25;">` + recordText;
+        }
+    }
 
-            alert(`Transaksi berhasil diproses via ${activePaymentMethod.toUpperCase()}! Tercatat di riwayat penjualan.`);
-            cart = [];
-            cashInput.value = 0;
-            renderProducts();
-            renderCart();
-            renderEmployeeHistory();
-        });
+    alert(`Transaksi berhasil diproses via ${activePaymentMethod.toUpperCase()}! Tercatat di riwayat penjualan.`);
+    cart = [];
+    cashInput.value = '';
+    changeOutput.innerText = 'Rp 0';
+    renderProducts();
+    renderCart();
+    renderEmployeeHistory();
+});
 
         filterBtns.forEach(btn => {
             btn.addEventListener('click', function() {

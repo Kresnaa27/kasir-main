@@ -1,8 +1,9 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\AuthController;
-use App\Http\Controllers\CashierController; // 1. Tambahkan ini di atas
+use App\Http\Controllers\ShiftController;
+use App\Http\Controllers\CashierController;
+use App\Http\Controllers\AuthController; // 1. Tambahkan ini di atas
 
 // Halaman utama mengecek status login
 Route::get('/', function () {
@@ -24,7 +25,7 @@ Route::middleware(['auth'])->group(function () {
     
     // Area Kasir (Menggunakan Controller yang baru dibuat)
     Route::get('/cashier', [CashierController::class, 'index'])->name('cashier.index');
-
+    Route::get('/api/shifts-today', [ShiftController::class, 'getTodayShifts']);
     // Area Admin Dashboard
     Route::get('/admin/dashboard', function () {
         $namaAdmin = auth()->user()->name;
