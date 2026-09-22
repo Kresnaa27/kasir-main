@@ -33,3 +33,6 @@ Route::middleware(['auth'])->group(function () {
     });
 
 });
+
+Route::get('/', [CashierController::class, 'index'])->name('cashier.index');
+Route::post('/checkout', [CashierController::class, 'store'])->name('cashier.store');

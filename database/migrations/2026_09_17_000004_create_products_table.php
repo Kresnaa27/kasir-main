@@ -9,10 +9,10 @@ return new class extends Migration {
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('category_id')->constrained()->cascadeOnDelete();
+            $table->foreignId('category_id')->constrained()->onDelete('cascade');
             $table->string('name');
-            $table->decimal('price', 12, 2);
-            $table->integer('stock')->default(0); // Kolom penampung stok
+            $table->integer('price');
+            $table->integer('stock');
             $table->timestamps();
         });
     }

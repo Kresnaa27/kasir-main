@@ -3,6 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>Kasir KOPDES - POS</title>
     <!-- Bootstrap 5 CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
@@ -115,7 +116,6 @@
         .product-img { width: 100%; height: 100%; object-fit: cover; }
         .cart-section { background: #ffffff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
 
-        /* Styling Pilihan Metode Pembayaran */
         .payment-method-btn {
             border: 1px solid #ced4da;
             background: #f8f9fa;
@@ -131,22 +131,22 @@
             border-color: #dc3545 !important;
             box-shadow: 0 2px 6px rgba(220, 53, 69, 0.3);
         }
-        /* Styling untuk kotak kembalian agar responsif */
-#changeOutputContainer {
-    word-break: break-word;
-    overflow: hidden;
-}
-#changeOutput {
-    font-size: 1.1rem !important; /* Ukuran font disesuaikan agar muat */
-    text-align: right;
-    display: inline-block;
-    max-width: 100%;
-}
-/* Styling Badge Shift Aktif Menyala */
-.badge-shift-active-pagi { background-color: #0dcaf0 !important; color: #000 !important; box-shadow: 0 0 10px rgba(13, 202, 240, 0.6); font-weight: bold; }
-.badge-shift-active-siang { background-color: #ffc107 !important; color: #000 !important; box-shadow: 0 0 10px rgba(255, 193, 7, 0.6); font-weight: bold; }
-.badge-shift-active-sore { background-color: #fd7e14 !important; color: #fff !important; box-shadow: 0 0 10px rgba(253, 126, 20, 0.6); font-weight: bold; }
-.badge-shift-inactive { background-color: #6c757d !important; color: #fff !important; opacity: 0.6; }
+
+        #changeOutputContainer {
+            word-break: break-word;
+            overflow: hidden;
+        }
+        #changeOutput {
+            font-size: 1.1rem !important;
+            text-align: right;
+            display: inline-block;
+            max-width: 100%;
+        }
+
+        .badge-shift-active-pagi { background-color: #0dcaf0 !important; color: #000 !important; box-shadow: 0 0 10px rgba(13, 202, 240, 0.6); font-weight: bold; }
+        .badge-shift-active-siang { background-color: #ffc107 !important; color: #000 !important; box-shadow: 0 0 10px rgba(255, 193, 7, 0.6); font-weight: bold; }
+        .badge-shift-active-sore { background-color: #fd7e14 !important; color: #fff !important; box-shadow: 0 0 10px rgba(253, 126, 20, 0.6); font-weight: bold; }
+        .badge-shift-inactive { background-color: #6c757d !important; color: #fff !important; opacity: 0.6; }
     </style>
 </head>
 <body>
@@ -216,7 +216,7 @@
                         <button class="btn btn-danger px-4 fw-semibold" type="button">Cari</button>
                     </div>
 
-                    <!-- Kategori Menu -->
+                    <!-- Kategori Menu Dinamis -->
                     <div class="row g-3 mb-4">
                         <div class="col-md-3 col-6">
                             <div class="card category-card active p-3 shadow-sm filter-btn" data-category="semua">
@@ -224,44 +224,24 @@
                                     <i class="fas fa-th-large fa-2x me-3"></i>
                                     <div>
                                         <h6 class="fw-bold mb-0">Semua</h6>
-                                        <small class="opacity-75" style="font-size: 0.75rem;">6 Produk</small>
+                                        <small class="opacity-75" style="font-size: 0.75rem;">{{ count($products) }} Produk</small>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        @foreach($categories as $category)
                         <div class="col-md-3 col-6">
-                            <div class="card category-card p-3 shadow-sm filter-btn" data-category="makanan">
+                            <div class="card category-card p-3 shadow-sm filter-btn" data-category="{{ Str::slug($category->name) }}">
                                 <div class="d-flex align-items-center">
-                                    <i class="fas fa-utensils fa-2x text-danger me-3"></i>
+                                    <i class="{{ $category->icon ?? 'fas fa-utensils' }} fa-2x text-danger me-3"></i>
                                     <div>
-                                        <h6 class="fw-bold mb-0">Makanan</h6>
-                                        <small class="text-muted" style="font-size: 0.75rem;">1 Produk</small>
+                                        <h6 class="fw-bold mb-0">{{ $category->name }}</h6>
+                                        <small class="text-muted" style="font-size: 0.75rem;">{{ $category->products_count ?? $category->products->count() }} Produk</small>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-3 col-6">
-                            <div class="card category-card p-3 shadow-sm filter-btn" data-category="minuman">
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-wine-bottle fa-2x text-danger me-3"></i>
-                                    <div>
-                                        <h6 class="fw-bold mb-0">Minuman</h6>
-                                        <small class="text-muted" style="font-size: 0.75rem;">2 Produk</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-md-3 col-6">
-                            <div class="card category-card p-3 shadow-sm filter-btn" data-category="snack">
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-cookie-bite fa-2x text-danger me-3"></i>
-                                    <div>
-                                        <h6 class="fw-bold mb-0">Snack</h6>
-                                        <small class="text-muted" style="font-size: 0.75rem;">3 Produk</small>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                     </div>
 
                     <!-- Daftar Produk -->
@@ -328,13 +308,13 @@
                         </div>
 
                         <div class="mb-3 bg-light p-2 rounded-3 border d-flex flex-column" id="changeSection">
-    <div class="d-flex justify-content-between align-items-center mb-1">
-        <span class="small text-secondary fw-semibold">Uang Kembalian:</span>
-    </div>
-    <div class="text-end" id="changeOutputContainer">
-        <span class="fw-bold text-success" id="changeOutput" style="font-size: 1.1rem;">Rp 0</span>
-    </div>
-</div>
+                            <div class="d-flex justify-content-between align-items-center mb-1">
+                                <span class="small text-secondary fw-semibold">Uang Kembalian:</span>
+                            </div>
+                            <div class="text-end" id="changeOutputContainer">
+                                <span class="fw-bold text-success" id="changeOutput" style="font-size: 1.1rem;">Rp 0</span>
+                            </div>
+                        </div>
 
                         <div class="d-grid gap-2">
                             <button class="btn btn-danger py-2 fw-bold shadow-sm" id="processBtn">
@@ -352,7 +332,7 @@
         </div>
     </div>
 
-    <!-- MODAL RIWAYAT PENJUALAN & CATATAN PEGAWAI -->
+    <!-- MODAL RIWAYAT PENJUALAN HARI INI -->
     <div class="modal fade" id="historyModal" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg rounded-4">
@@ -361,30 +341,47 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4">
-                    <!-- Info Waktu Hari Ini -->
                     <div class="alert alert-light border d-flex justify-content-between align-items-center mb-3 py-2">
                         <div>
-                            <i class="fas fa-calendar-alt text-danger me-1"></i> <span id="currentDateText" class="fw-bold text-dark">Senin, 21 September 2026</span>
+                            <i class="fas fa-calendar-alt text-danger me-1"></i> <span id="currentDateText" class="fw-bold text-dark">--</span>
                         </div>
                         <div>
-                            <i class="fas fa-clock text-danger me-1"></i> <span id="currentTimeText" class="fw-bold text-dark">16:05 WITA</span>
+                            <i class="fas fa-clock text-danger me-1"></i> <span id="currentTimeText" class="fw-bold text-dark">--</span>
                         </div>
                     </div>
 
-                    <!-- Tabel Catatan Shift Pegawai -->
+                    <!-- Tabel Transaksi Hari Ini Dinamis dari Database -->
                     <div class="table-responsive">
                         <table class="table table-bordered align-middle small">
                             <thead class="table-dark text-center">
                                 <tr>
-                                    <th>Nama Pegawai</th>
-                                    <th>Shift</th>
-                                    <th>Total Pelanggan</th>
-                                    <th>Total Penjualan</th>
-                                    <th>Produk Terjual & Waktu</th>
+                                    <th>Waktu</th>
+                                    <th>Total Tagihan</th>
+                                    <th>Pembayaran</th>
+                                    <th>Kembalian</th>
+                                    <th>Detail Barang</th>
                                 </tr>
                             </thead>
-                            <tbody id="employeeHistoryBody">
-                                <!-- Kosong di awal, terisi otomatis saat transaksi -->
+                            <tbody id="todayHistoryTableBody">
+                                @forelse($todayTransactions as $tx)
+                                <tr>
+                                    <td class="text-center fw-bold">{{ $tx->created_at->format('H:i') }} WITA</td>
+                                    <td class="fw-bold text-success text-end">Rp {{ number_format($tx->total_amount, 0, ',', '.') }}</td>
+                                    <td class="text-end">Rp {{ number_format($tx->pay_amount, 0, ',', '.') }}</td>
+                                    <td class="text-end">Rp {{ number_format($tx->change_amount, 0, ',', '.') }}</td>
+                                    <td>
+                                        <ul class="mb-0 ps-3">
+                                            @foreach($tx->details as $detail)
+                                                <li>{{ $detail->product->name ?? 'Produk' }} x {{ $detail->quantity }}</li>
+                                            @endforeach
+                                        </ul>
+                                    </td>
+                                </tr>
+                                @empty
+                                <tr>
+                                    <td colspan="5" class="text-center text-muted py-3">Belum ada transaksi untuk hari ini.</td>
+                                </tr>
+                                @endforelse
                             </tbody>
                         </table>
                     </div>
@@ -454,40 +451,19 @@
         </div>
     </div>
 
-    <!-- Script JavaScript -->
+    <!-- Script JavaScript Dinamis -->
     <script>
     document.addEventListener("DOMContentLoaded", function() {
-    fetchShiftsData(); // Panggil fungsi untuk mengambil data shift saat halaman dimuat
-        let products = [
-            { id: 1, name: "Indomie Goreng Special", category: "makanan", price: 3500, stock: 18, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrqqsV-RruRSrz5mPzBJrEtSLa6iqOrI8Zx1-5OdnNb9wP29O5OZHAO3J2&s=10" },
-            { id: 2, name: "Aqua 600ml", category: "minuman", price: 4000, stock: 24, img: "https://siplah.blibli.com/data/images/SCMA-0301-00108/33dccfbf-537c-43e6-a283-7984c16cc1d3.jpg" },
-            { id: 3, name: "Potabee Keripik Kentang", category: "snack", price: 10500, stock: 3, img: "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=300" },
-            { id: 4, name: "Coca Cola 390ml", category: "minuman", price: 7000, stock: 12, img: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=300" },
-            { id: 5, name: "Chitato Sapi Panggang", category: "snack", price: 11000, stock: 15, img: "https://images.unsplash.com/photo-1599490659213-e2b9527bd087?w=300" },
-            { id: 6, name: "Qtela Keripik Singkong", category: "snack", price: 9500, stock: 8, img: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?w=300" }
-        ];
+        // Ambil Data Produk dari Database via Laravel Blade
+        let products = @json($products).map(p => ({
+            id: p.id,
+            name: p.name,
+            category: p.category ? p.category.name.toLowerCase().replace(/\s+/g, '-') : 'lainnya',
+            price: p.price,
+            stock: p.stock,
+            img: p.image ? `/storage/${p.image}` : 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=300'
+        }));
 
-        // Deklarasi variabel penampung data shift awal kosong
-        let employeesData = [];
-
-        // Fungsi untuk mengambil data shift secara real-time dari database
-        function fetchShiftsData() {
-            fetch('/api/shifts-today')
-                .then(response => response.json())
-                .then(data => {
-                    // Sesuaikan key dari database jika diperlukan, lalu render ulang tabel
-                    employeesData = data.map(item => ({
-                        name: item.name,
-                        shift: item.shift,
-                        customers: item.customers,
-                        totalSales: parseFloat(item.total_sales),
-                        itemsSold: item.items_sold
-                    }));
-                    renderEmployeeHistory();
-                })
-                .catch(error => console.error('Gagal memuat data shift:', error));
-        }
-        
         let activeCashier = "Dewa";
         let activePaymentMethod = "cash";
         let cart = [];
@@ -508,10 +484,8 @@
         const restockProductSelect = document.getElementById('restockProductSelect');
         const restockQtyInput = document.getElementById('restockQtyInput');
         const saveRestockBtn = document.getElementById('saveRestockBtn');
-        const employeeHistoryBody = document.getElementById('employeeHistoryBody');
         const currentCashierName = document.getElementById('currentCashierName');
         const activeShiftName = document.getElementById('activeShiftName');
-        const activeShiftTime = document.getElementById('activeShiftTime');
         const switchCashierSelect = document.getElementById('switchCashierSelect');
         const applyShiftBtn = document.getElementById('applyShiftBtn');
         const currentDateText = document.getElementById('currentDateText');
@@ -520,7 +494,7 @@
         const cashPaymentSection = document.getElementById('cashPaymentSection');
         const changeSection = document.getElementById('changeSection');
 
-        // Set Tanggal & Waktu Real-Time
+        // Real-time Date Time
         function updateDateTime() {
             let now = new Date();
             let optionsDate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
@@ -578,11 +552,11 @@
                                         Stok: ${prod.stock}
                                     </span>
                                 `}
-                                <img src="${prod.img}" class="product-img" alt="${prod.name}">
+                                <img src="${prod.img}" class="product-img" alt="${prod.name}" onerror="this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?w=300'">
                             </div>
                             <div class="card-body p-3 d-flex flex-column justify-content-between">
                                 <div>
-                                    <span class="badge bg-danger bg-opacity-10 text-danger mb-1" style="font-size: 0.65rem; text-transform: capitalize;">${prod.category}</span>
+                                    <span class="badge bg-danger bg-opacity-10 text-danger mb-1" style="font-size: 0.65rem; text-transform: capitalize;">${prod.category.replace('-', ' ')}</span>
                                     <h6 class="fw-bold text-dark mb-1" style="font-size: 0.95rem;">${prod.name}</h6>
                                     <p class="text-danger fw-bold mb-3">Rp ${prod.price.toLocaleString('id-ID')}</p>
                                 </div>
@@ -610,33 +584,6 @@
                 });
             });
         }
-
-        // Render Riwayat Pegawai ke Modal
-        function renderEmployeeHistory() {
-    employeeHistoryBody.innerHTML = '';
-    employeesData.forEach(emp => {
-        // Tentukan warna badge berdasarkan apakah pegawai tersebut adalah kasir aktif saat ini
-        let isActive = (emp.name === activeCashier);
-        let badgeClass = 'badge-shift-inactive';
-        
-        if (isActive) {
-            if (emp.shift.includes('Pagi')) badgeClass = 'badge-shift-active-pagi';
-            else if (emp.shift.includes('Siang')) badgeClass = 'badge-shift-active-siang';
-            else if (emp.shift.includes('Sore')) badgeClass = 'badge-shift-active-sore';
-        }
-
-        let row = `
-            <tr>
-                <td class="fw-bold text-dark">${emp.name} ${isActive ? '<span class="badge bg-danger ms-1" style="font-size: 0.65rem;">Aktif</span>' : ''}</td>
-                <td><span class="badge rounded-pill px-3 py-2 ${badgeClass}">${emp.shift}</span></td>
-                <td class="text-center fw-bold">${emp.customers} Orang</td>
-                <td class="fw-bold text-success">Rp ${emp.totalSales.toLocaleString('id-ID')}</td>
-                <td class="text-muted small">${emp.itemsSold}</td>
-            </tr>
-        `;
-        employeeHistoryBody.insertAdjacentHTML('beforeend', row);
-    });
-}
 
         function addToCart(prodId) {
             let prod = products.find(p => p.id === prodId);
@@ -684,7 +631,7 @@
             });
 
             grandTotalEl.innerText = 'Rp ' + total.toLocaleString('id-ID');
-            calculateChange(total);
+            calculateChange();
 
             document.querySelectorAll('.increase-qty').forEach(btn => {
                 btn.addEventListener('click', function() {
@@ -714,41 +661,33 @@
             });
         }
 
-       function calculateChange(cashAmount) {
-    if (activePaymentMethod !== 'cash') return;
-    let total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-    let change = cashAmount - total;
-    
-    if (change >= 0) {
-        changeOutput.innerText = 'Rp ' + change.toLocaleString('id-ID');
-        changeOutput.className = 'fw-bold text-success';
-    } else {
-        changeOutput.innerText = 'Kurang Rp ' + Math.abs(change).toLocaleString('id-ID');
-        changeOutput.className = 'fw-bold text-danger';
-    }
-
-    // Penyesuaian ukuran font dinamis jika teks terlalu panjang
-    if (changeOutput.innerText.length > 15) {
-        changeOutput.style.fontSize = '0.95rem';
-    } else {
-        changeOutput.style.fontSize = '1.2rem';
-    }
-}
+        function calculateChange() {
+            if (activePaymentMethod !== 'cash') return;
+            let total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            let cashRaw = cashInput.value.replace(/[^0-9]/g, '');
+            let cashAmount = parseInt(cashRaw, 10) || 0;
+            let change = cashAmount - total;
+            
+            if (change >= 0) {
+                changeOutput.innerText = 'Rp ' + change.toLocaleString('id-ID');
+                changeOutput.className = 'fw-bold text-success';
+            } else {
+                changeOutput.innerText = 'Kurang Rp ' + Math.abs(change).toLocaleString('id-ID');
+                changeOutput.className = 'fw-bold text-danger';
+            }
+        }
 
         cashInput.addEventListener('input', function() {
-    let rawValue = this.value.replace(/[^0-9]/g, '');
-    
-    if (rawValue === '') {
-        this.value = '';
-        calculateChange(0);
-        return;
-    }
-
-    let numericValue = parseInt(rawValue, 10);
-    this.value = 'Rp ' + numericValue.toLocaleString('id-ID');
-
-    calculateChange(numericValue);
-});
+            let rawValue = this.value.replace(/[^0-9]/g, '');
+            if (rawValue === '') {
+                this.value = '';
+                calculateChange();
+                return;
+            }
+            let numericValue = parseInt(rawValue, 10);
+            this.value = 'Rp ' + numericValue.toLocaleString('id-ID');
+            calculateChange();
+        });
 
         clearCartBtn.addEventListener('click', function() {
             cart.forEach(cartItem => {
@@ -756,68 +695,60 @@
                 if (prod) prod.stock += cartItem.qty;
             });
             cart = [];
-            cashInput.value = 0;
+            cashInput.value = '';
+            changeOutput.innerText = 'Rp 0';
             renderProducts();
             renderCart();
         });
 
-        // Proses Transaksi & Catat Real-Time
+        // Simpan Transaksi ke Database via Endpoint Backend
         processBtn.addEventListener('click', function() {
-    if (cart.length === 0) {
-        alert('Keranjang masih kosong!');
-        return;
-    }
-    
-    let total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-    
-    let cashRaw = cashInput.value.replace(/[^0-9]/g, '');
-    let cash = parseInt(cashRaw, 10) || 0;
+            if (cart.length === 0) {
+                alert('Keranjang masih kosong!');
+                return;
+            }
+            
+            let total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
+            let cashRaw = cashInput.value.replace(/[^0-9]/g, '');
+            let cash = parseInt(cashRaw, 10) || total;
 
-    if (activePaymentMethod === 'cash') {
-        if (cash < total) {
-            alert('Jumlah uang tunai kurang dari total tagihan!');
-            return;
-        }
-    }
+            if (activePaymentMethod === 'cash' && cash < total) {
+                alert('Jumlah uang tunai kurang dari total tagihan!');
+                return;
+            }
 
-    let now = new Date();
-    let timeString = now.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit' });
-    let dateString = now.toLocaleDateString('id-ID', { day: 'numeric', month: 'short', year: 'numeric' });
+            let payload = {
+                pay_amount: cash,
+                notes: `Metode: ${activePaymentMethod.toUpperCase()} | Kasir: ${activeCashier}`,
+                cart: cart.map(item => ({
+                    id: item.id,
+                    price: item.price,
+                    quantity: item.qty
+                }))
+            };
 
-    let emp = employeesData.find(e => e.name === activeCashier);
-    if (emp) {
-        emp.customers += 1;
-        emp.totalSales += total;
-        
-        let summaryItems = cart.map(i => `${i.name} (${i.qty} pcs)`).join(', ');
-        
-        // Format baru dengan pembatas dan rincian Total Belanjaan agar lebih bersih dibaca
-        let recordText = `<b>[${dateString}, Pukul ${timeString} - ${activePaymentMethod.toUpperCase()}]</b><br>` +
-                         `• Barang: ${summaryItems}<br>` +
-                         `• Total Belanjaan: Rp ${total.toLocaleString('id-ID')}`;
-        
-        if (activePaymentMethod === 'cash') {
-            let changeAmount = cash - total;
-            recordText += `<br>• Uang Diberikan: Rp ${cash.toLocaleString('id-ID')}` +
-                          `<br>• Kembalian: Rp ${changeAmount.toLocaleString('id-ID')}`;
-        }
-        
-        if (emp.itemsSold === "Belum ada transaksi" || emp.itemsSold === "Belum mulai shift") {
-            emp.itemsSold = recordText;
-        } else {
-            // Ditambah garis pembatas <hr class="my-2"> agar antar transaksi tidak menumpuk
-            emp.itemsSold += `<hr class="my-2 text-muted" style="opacity: 0.25;">` + recordText;
-        }
-    }
-
-    alert(`Transaksi berhasil diproses via ${activePaymentMethod.toUpperCase()}! Tercatat di riwayat penjualan.`);
-    cart = [];
-    cashInput.value = '';
-    changeOutput.innerText = 'Rp 0';
-    renderProducts();
-    renderCart();
-    renderEmployeeHistory();
-});
+            fetch('{{ route("cashier.store") }}', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Transaksi berhasil diproses & disimpan ke database!');
+                    window.location.reload(); // Muat ulang agar riwayat & stok terupdate dari DB
+                } else {
+                    alert('Gagal memproses transaksi: ' + (data.message || 'Error'));
+                }
+            })
+            .catch(err => {
+                console.error(err);
+                alert('Terjadi kesalahan koneksi.');
+            });
+        });
 
         filterBtns.forEach(btn => {
             btn.addEventListener('click', function() {
@@ -858,7 +789,6 @@
         });
 
         renderProducts();
-        renderEmployeeHistory();
     });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

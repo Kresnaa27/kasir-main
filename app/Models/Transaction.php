@@ -10,8 +10,15 @@ class Transaction extends Model
     use HasFactory;
 
     protected $fillable = [
-        'shift_id', 'user_id', 'invoice_number', 
-        'total_amount', 'paid_amount', 'change_amount', 'payment_method'
+        'shift_id', 
+        'user_id', 
+        'invoice_number', 
+        'total_amount', 
+        'paid_amount', 
+        'pay_amount', 
+        'change_amount', 
+        'payment_method',
+        'notes',
     ];
 
     // Transaksi dicatat dalam satu shift
