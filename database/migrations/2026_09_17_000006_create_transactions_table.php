@@ -9,14 +9,12 @@ return new class extends Migration {
     {
         Schema::create('transactions', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('shift_id')->constrained('shifts')->onDelete('cascade');
-            $table->foreignId('user_id')->constrained('users')->onDelete('cascade');
             $table->string('invoice_number')->unique();
             $table->decimal('total_amount', 12, 2);
             $table->decimal('paid_amount', 12, 2);
             $table->decimal('change_amount', 12, 2);
-            $table->string('payment_method')->default('cash');
-            $table->timestamps();
+            $table->string('payment_method');
+            $table->timestamps(); // created_at digunakan sebagai acuan tanggal transaksi
         });
     }
 

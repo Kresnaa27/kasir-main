@@ -459,8 +459,8 @@
     document.addEventListener("DOMContentLoaded", function() {
     fetchShiftsData(); // Panggil fungsi untuk mengambil data shift saat halaman dimuat
         let products = [
-            { id: 1, name: "Indomie Goreng Special", category: "makanan", price: 3500, stock: 18, img: "https://images.unsplash.com/photo-1612927601601-6638404738c2?w=300" },
-            { id: 2, name: "Aqua 600ml", category: "minuman", price: 4000, stock: 24, img: "https://images.unsplash.com/photo-1548839140-29a749e1cf4c?w=300" },
+            { id: 1, name: "Indomie Goreng Special", category: "makanan", price: 3500, stock: 18, img: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQrqqsV-RruRSrz5mPzBJrEtSLa6iqOrI8Zx1-5OdnNb9wP29O5OZHAO3J2&s=10" },
+            { id: 2, name: "Aqua 600ml", category: "minuman", price: 4000, stock: 24, img: "https://siplah.blibli.com/data/images/SCMA-0301-00108/33dccfbf-537c-43e6-a283-7984c16cc1d3.jpg" },
             { id: 3, name: "Potabee Keripik Kentang", category: "snack", price: 10500, stock: 3, img: "https://images.unsplash.com/photo-1566478989037-eec170784d0b?w=300" },
             { id: 4, name: "Coca Cola 390ml", category: "minuman", price: 7000, stock: 12, img: "https://images.unsplash.com/photo-1622483767028-3f66f32aef97?w=300" },
             { id: 5, name: "Chitato Sapi Panggang", category: "snack", price: 11000, stock: 15, img: "https://images.unsplash.com/photo-1599490659213-e2b9527bd087?w=300" },
