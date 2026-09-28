@@ -216,32 +216,85 @@
                         <button class="btn btn-danger px-4 fw-semibold" type="button">Cari</button>
                     </div>
 
-                    <!-- Kategori Menu Dinamis -->
+                   <!-- Card Kategori Utama (Desain Semula dengan Dropdown Panah) -->
                     <div class="row g-3 mb-4">
                         <div class="col-md-3 col-6">
                             <div class="card category-card active p-3 shadow-sm filter-btn" data-category="semua">
-                                <div class="d-flex align-items-center">
-                                    <i class="fas fa-th-large fa-2x me-3"></i>
-                                    <div>
-                                        <h6 class="fw-bold mb-0">Semua</h6>
-                                        <small class="opacity-75" style="font-size: 0.75rem;">{{ count($products) }} Produk</small>
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-th-large fa-2x me-3"></i>
+                                        <div>
+                                            <h6 class="fw-bold mb-0">Semua</h6>
+                                            <small class="opacity-75" style="font-size: 0.75rem;">{{ count($products) }} Produk</small>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        @foreach($categories as $category)
+
+                        <!-- Kategori 1: Makanan & Snack dengan Dropdown -->
                         <div class="col-md-3 col-6">
-                            <div class="card category-card p-3 shadow-sm filter-btn" data-category="{{ Str::slug($category->name) }}">
-                                <div class="d-flex align-items-center">
-                                    <i class="{{ $category->icon ?? 'fas fa-utensils' }} fa-2x text-danger me-3"></i>
-                                    <div>
-                                        <h6 class="fw-bold mb-0">{{ $category->name }}</h6>
-                                        <small class="text-muted" style="font-size: 0.75rem;">{{ $category->products_count ?? $category->products->count() }} Produk</small>
+                            <div class="card category-card p-3 shadow-sm dropdown-toggle-custom" data-target="dropdown-makanan" style="cursor: pointer;">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-utensils fa-2x text-danger me-3"></i>
+                                        <div>
+                                            <h6 class="fw-bold mb-0">Makanan</h6>
+                                            <small class="text-muted" style="font-size: 0.75rem;">Sub-kategori <i class="fas fa-chevron-down ms-1" style="font-size: 0.65rem;"></i></small>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
+                            <!-- Sub Menu Dropdown Makanan -->
+                            <div class="card shadow-sm border-0 position-absolute mt-1 p-2 bg-white rounded-3 sub-dropdown-menu" id="dropdown-makanan" style="display: none; z-index: 99; width: 220px;">
+                                <a href="#sec-makanan-ringan" class="dropdown-item py-1 px-2 rounded small fw-semibold text-dark text-decoration-none d-block scroll-link" data-target-section="sec-makanan-ringan">↳ Makanan Ringan & Snack</a>
+                                <a href="#sec-makanan-instan" class="dropdown-item py-1 px-2 rounded small fw-semibold text-dark text-decoration-none d-block scroll-link mt-1" data-target-section="sec-makanan-instan">↳ Makanan Instan</a>
+                            </div>
                         </div>
-                        @endforeach
+
+                        <!-- Kategori 2: Minuman -->
+                        <div class="col-md-3 col-6">
+                            <div class="card category-card p-3 shadow-sm dropdown-toggle-custom" data-target="dropdown-minuman" style="cursor: pointer;">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-glass-whiskey fa-2x text-danger me-3"></i>
+                                        <div>
+                                            <h6 class="fw-bold mb-0">Minuman</h6>
+                                            <small class="text-muted" style="font-size: 0.75rem;">Sub-kategori <i class="fas fa-chevron-down ms-1" style="font-size: 0.65rem;"></i></small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Sub Menu Dropdown Minuman -->
+                            <div class="card shadow-sm border-0 position-absolute mt-1 p-2 bg-white rounded-3 sub-dropdown-menu" id="dropdown-minuman" style="display: none; z-index: 99; width: 220px;">
+                                <a href="#sec-minuman-dingin" class="dropdown-item py-1 px-2 rounded small fw-semibold text-dark text-decoration-none d-block scroll-link" data-target-section="sec-minuman-dingin">↳ Minuman Dingin & Botol</a>
+                                <a href="#sec-minuman-hangat" class="dropdown-item py-1 px-2 rounded small fw-semibold text-dark text-decoration-none d-block scroll-link mt-1" data-target-section="sec-minuman-hangat">↳ Kopi & Teh Hangat</a>
+                            </div>
+                        </div>
+
+                        <!-- Kategori 3: Kebutuhan Harian -->
+                        <div class="col-md-3 col-6">
+                            <div class="card category-card p-3 shadow-sm dropdown-toggle-custom" data-target="dropdown-harian" style="cursor: pointer;">
+                                <div class="d-flex align-items-center justify-content-between">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fas fa-shopping-basket fa-2x text-danger me-3"></i>
+                                        <div>
+                                            <h6 class="fw-bold mb-0">Kebutuhan</h6>
+                                            <small class="text-muted" style="font-size: 0.75rem;">Sub-kategori <i class="fas fa-chevron-down ms-1" style="font-size: 0.65rem;"></i></small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <!-- Sub Menu Dropdown Harian -->
+                            <div class="card shadow-sm border-0 position-absolute mt-1 p-2 bg-white rounded-3 sub-dropdown-menu" id="dropdown-harian" style="display: none; z-index: 99; width: 220px;">
+                                <a href="#sec-kebersihan" class="dropdown-item py-1 px-2 rounded small fw-semibold text-dark text-decoration-none d-block scroll-link" data-target-section="sec-kebersihan">↳ Kebersihan & Rumah Tangga</a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Katalog Produk Tersusun Rapi Berdasarkan Kategori & Sub-Kategori -->
+                    <div id="structuredCatalogContainer">
+                        <!-- Render kelompok produk secara dinamis via JavaScript -->
                     </div>
 
                     <!-- Daftar Produk -->
@@ -454,130 +507,111 @@
     <!-- Script JavaScript Dinamis -->
     <script>
     document.addEventListener("DOMContentLoaded", function() {
-        // Ambil Data Produk dari Database via Laravel Blade
         let products = @json($products).map(p => ({
             id: p.id,
             name: p.name,
-            category: p.category ? p.category.name.toLowerCase().replace(/\s+/g, '-') : 'lainnya',
+            category: p.category ? p.category.name.toLowerCase() : 'lainnya',
             price: p.price,
             stock: p.stock,
             img: p.image ? `/storage/${p.image}` : 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=300'
         }));
 
-        let activeCashier = "Dewa";
-        let activePaymentMethod = "cash";
-        let cart = [];
-        let currentFilter = 'semua';
-        let searchKeyword = '';
+        // Logika Toggle Sub-Dropdown Kategori
+        const dropdownToggles = document.querySelectorAll('.dropdown-toggle-custom');
+        dropdownToggles.forEach(toggle => {
+            toggle.addEventListener('click', function(e) {
+                e.stopPropagation();
+                let targetId = this.getAttribute('data-target');
+                let targetMenu = document.getElementById(targetId);
+                
+                // Tutup dropdown lain yang terbuka
+                document.querySelectorAll('.sub-dropdown-menu').forEach(menu => {
+                    if (menu.id !== targetId) menu.style.display = 'none';
+                });
 
-        const productListContainer = document.getElementById('productListContainer');
-        const filterBtns = document.querySelectorAll('.filter-btn');
-        const searchInput = document.getElementById('searchProduct');
-        const cartTableBody = document.getElementById('cartTableBody');
-        const grandTotalEl = document.getElementById('grandTotal');
-        const cashInput = document.getElementById('cashInput');
-        const changeOutput = document.getElementById('changeOutput');
-        const clearCartBtn = document.getElementById('clearCartBtn');
-        const processBtn = document.getElementById('processBtn');
-        const globalStockAlert = document.getElementById('globalStockAlert');
-        const sidebarWarningDot = document.getElementById('sidebarWarningDot');
-        const restockProductSelect = document.getElementById('restockProductSelect');
-        const restockQtyInput = document.getElementById('restockQtyInput');
-        const saveRestockBtn = document.getElementById('saveRestockBtn');
-        const currentCashierName = document.getElementById('currentCashierName');
-        const activeShiftName = document.getElementById('activeShiftName');
-        const switchCashierSelect = document.getElementById('switchCashierSelect');
-        const applyShiftBtn = document.getElementById('applyShiftBtn');
-        const currentDateText = document.getElementById('currentDateText');
-        const currentTimeText = document.getElementById('currentTimeText');
-        const paymentMethodBtns = document.querySelectorAll('.payment-method-btn');
-        const cashPaymentSection = document.getElementById('cashPaymentSection');
-        const changeSection = document.getElementById('changeSection');
-
-        // Real-time Date Time
-        function updateDateTime() {
-            let now = new Date();
-            let optionsDate = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
-            currentDateText.innerText = now.toLocaleDateString('id-ID', optionsDate);
-            currentTimeText.innerText = now.toLocaleTimeString('id-ID') + " WITA";
-        }
-        updateDateTime();
-        setInterval(updateDateTime, 1000);
-
-        // Pilih Metode Pembayaran
-        paymentMethodBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                paymentMethodBtns.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                activePaymentMethod = this.getAttribute('data-method');
-
-                if (activePaymentMethod === 'cash') {
-                    cashPaymentSection.style.display = 'block';
-                    changeSection.style.display = 'flex';
+                // Toggle menu saat ini
+                if (targetMenu.style.display === 'block') {
+                    targetMenu.style.display = 'none';
                 } else {
-                    cashPaymentSection.style.display = 'none';
-                    changeSection.style.display = 'none';
+                    targetMenu.style.display = 'block';
                 }
             });
         });
 
-        // Render Katalog Produk
-        function renderProducts() {
-            productListContainer.innerHTML = '';
-            let hasLowStock = false;
-            restockProductSelect.innerHTML = '';
+        // Tutup dropdown jika klik di luar
+        document.addEventListener('click', function() {
+            document.querySelectorAll('.sub-dropdown-menu').forEach(menu => {
+                menu.style.display = 'none';
+            });
+        });
 
-            products.forEach(prod => {
-                if (currentFilter !== 'semua' && prod.category !== currentFilter) return;
-                if (searchKeyword && !prod.name.toLowerCase().includes(searchKeyword)) return;
+        // Fungsi Render Katalog Produk Tersusun Rapi Berkelompok
+        const structuredCatalogContainer = document.getElementById('structuredCatalogContainer');
+        const searchInput = document.getElementById('searchProduct');
+        let searchKeyword = '';
 
-                let isLowStock = prod.stock <= 5;
-                if (isLowStock) hasLowStock = true;
+        function renderStructuredCatalog() {
+            structuredCatalogContainer.innerHTML = '';
 
-                let opt = document.createElement('option');
-                opt.value = prod.id;
-                opt.textContent = `${prod.name} (Stok: ${prod.stock}${isLowStock ? ' - Menipis!' : ''})`;
-                restockProductSelect.appendChild(opt);
+            // Kelompokkan produk berdasarkan sub-kategori tiruan/logika nama
+            let groups = [
+                { id: 'sec-makanan-ringan', title: '1. Makanan & Snack', subtitle: 'Makanan Ringan & Snack', filterFn: p => p.category.includes('makanan') || p.category.includes('snack') },
+                { id: 'sec-makanan-instan', title: '', subtitle: 'Makanan Instan', filterFn: p => p.category.includes('instan') || p.name.toLowerCase().includes('mie') },
+                { id: 'sec-minuman-dingin', title: '2. Minuman', subtitle: 'Minuman Dingin & Botol', filterFn: p => p.category.includes('minuman') || p.category.includes('drink') },
+                { id: 'sec-kebersihan', title: '3. Kebutuhan Harian & Rumah Tangga', subtitle: 'Kebersihan & Perawatan', filterFn: p => p.category.includes('kebersihan') || p.category.includes('sabun') || p.category.includes('rumah') }
+            ];
 
-                let cardHtml = `
-                    <div class="col-md-4 col-sm-6 product-item">
-                        <div class="card product-card h-100 ${isLowStock ? 'border-warning border-2' : ''}">
-                            <div class="product-img-wrapper">
-                                ${isLowStock ? `
-                                    <span class="position-absolute top-0 start-0 badge bg-warning text-dark m-2 shadow-sm" style="font-size: 0.65rem; z-index: 2;">
-                                        <i class="fas fa-exclamation-triangle"></i> Stok Menipis (${prod.stock})
-                                    </span>
-                                ` : `
-                                    <span class="position-absolute top-0 end-0 badge bg-dark text-white m-2 opacity-75 shadow-sm" style="font-size: 0.7rem; z-index: 2;">
-                                        Stok: ${prod.stock}
-                                    </span>
-                                `}
-                                <img src="${prod.img}" class="product-img" alt="${prod.name}" onerror="this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?w=300'">
-                            </div>
-                            <div class="card-body p-3 d-flex flex-column justify-content-between">
-                                <div>
-                                    <span class="badge bg-danger bg-opacity-10 text-danger mb-1" style="font-size: 0.65rem; text-transform: capitalize;">${prod.category.replace('-', ' ')}</span>
-                                    <h6 class="fw-bold text-dark mb-1" style="font-size: 0.95rem;">${prod.name}</h6>
-                                    <p class="text-danger fw-bold mb-3">Rp ${prod.price.toLocaleString('id-ID')}</p>
+            groups.forEach(group => {
+                let filteredProducts = products.filter(group.filterFn);
+                if (searchKeyword) {
+                    filteredProducts = filteredProducts.filter(p => p.name.toLowerCase().includes(searchKeyword));
+                }
+                if (filteredProducts.length === 0 && searchKeyword) return;
+
+                let sectionHtml = `
+                    <div class="mb-4 catalog-section-group" id="${group.id}">
+                        ${group.title ? `<h5 class="fw-bold text-dark mb-1 border-bottom pb-2"><i class="fas fa-layer-group text-danger me-2"></i>${group.title}</h5>` : ''}
+                        <h6 class="text-secondary fw-semibold mt-2 mb-3 ms-1" style="font-size: 0.9rem;">↳ ${group.subtitle}</h6>
+                        <div class="row g-3">
+                `;
+
+                filteredProducts.forEach(prod => {
+                    let isLowStock = prod.stock <= 5;
+                    sectionHtml += `
+                        <div class="col-md-4 col-sm-6 product-item">
+                            <div class="card product-card h-100 ${isLowStock ? 'border-warning border-2' : ''}">
+                                <div class="product-img-wrapper">
+                                    ${isLowStock ? `
+                                        <span class="position-absolute top-0 start-0 badge bg-warning text-dark m-2 shadow-sm" style="font-size: 0.65rem; z-index: 2;">
+                                            <i class="fas fa-exclamation-triangle"></i> Stok Menipis (${prod.stock})
+                                        </span>
+                                    ` : `
+                                        <span class="position-absolute top-0 end-0 badge bg-dark text-white m-2 opacity-75 shadow-sm" style="font-size: 0.7rem; z-index: 2;">
+                                            Stok: ${prod.stock}
+                                        </span>
+                                    `}
+                                    <img src="${prod.img}" class="product-img" alt="${prod.name}" onerror="this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?w=300'">
                                 </div>
-                                <button class="btn btn-outline-danger btn-sm w-100 fw-semibold rounded-pill add-to-cart-btn" data-id="${prod.id}" ${prod.stock <= 0 ? 'disabled' : ''}>
-                                    <i class="fas fa-plus me-1"></i> ${prod.stock <= 0 ? 'Stok Habis' : 'Tambah'}
-                                </button>
+                                <div class="card-body p-3 d-flex flex-column justify-content-between">
+                                    <div>
+                                        <span class="badge bg-danger bg-opacity-10 text-danger mb-1" style="font-size: 0.65rem; text-transform: capitalize;">${prod.category}</span>
+                                        <h6 class="fw-bold text-dark mb-1" style="font-size: 0.95rem;">${prod.name}</h6>
+                                        <p class="text-danger fw-bold mb-3">Rp ${prod.price.toLocaleString('id-ID')}</p>
+                                    </div>
+                                    <button class="btn btn-outline-danger btn-sm w-100 fw-semibold rounded-pill add-to-cart-btn" data-id="${prod.id}" ${prod.stock <= 0 ? 'disabled' : ''}>
+                                        <i class="fas fa-plus me-1"></i> ${prod.stock <= 0 ? 'Stok Habis' : 'Tambah'}
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                `;
-                productListContainer.insertAdjacentHTML('beforeend', cardHtml);
+                    `;
+                });
+
+                sectionHtml += `</div></div>`;
+                structuredCatalogContainer.insertAdjacentHTML('beforeend', sectionHtml);
             });
 
-            if (hasLowStock) {
-                globalStockAlert.style.display = 'inline-block';
-                sidebarWarningDot.style.display = 'block';
-            } else {
-                globalStockAlert.style.display = 'none';
-                sidebarWarningDot.style.display = 'none';
-            }
-
+            // Pasang kembali event listener tombol tambah ke keranjang
             document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
                 btn.addEventListener('click', function() {
                     addToCart(parseInt(this.getAttribute('data-id')));
@@ -585,210 +619,24 @@
             });
         }
 
-        function addToCart(prodId) {
-            let prod = products.find(p => p.id === prodId);
-            if (!prod || prod.stock <= 0) return;
-
-            prod.stock -= 1;
-            let cartItem = cart.find(item => item.id === prodId);
-            if (cartItem) {
-                cartItem.qty += 1;
-            } else {
-                cart.push({ id: prod.id, name: prod.name, price: prod.price, qty: 1 });
-            }
-            renderProducts();
-            renderCart();
-        }
-
-        function renderCart() {
-            cartTableBody.innerHTML = '';
-            if (cart.length === 0) {
-                cartTableBody.innerHTML = '<tr><td colspan="3" class="text-center text-muted py-3">Keranjang masih kosong</td></tr>';
-                grandTotalEl.innerText = 'Rp 0';
-                changeOutput.innerText = 'Rp 0';
-                return;
-            }
-
-            let total = 0;
-            cart.forEach((item, index) => {
-                let subtotal = item.price * item.qty;
-                total += subtotal;
-
-                let row = `
-                    <tr>
-                        <td>${item.name}</td>
-                        <td>
-                            <div class="input-group input-group-sm" style="width: 80px;">
-                                <button class="btn btn-outline-secondary px-1 py-0 decrease-qty" data-index="${index}">-</button>
-                                <input type="text" value="${item.qty}" class="form-control text-center p-0" readonly style="background: #fff;">
-                                <button class="btn btn-outline-secondary px-1 py-0 increase-qty" data-index="${index}">+</button>
-                            </div>
-                        </td>
-                        <td class="text-end">Rp ${subtotal.toLocaleString('id-ID')}</td>
-                    </tr>
-                `;
-                cartTableBody.insertAdjacentHTML('beforeend', row);
-            });
-
-            grandTotalEl.innerText = 'Rp ' + total.toLocaleString('id-ID');
-            calculateChange();
-
-            document.querySelectorAll('.increase-qty').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    let idx = this.getAttribute('data-index');
-                    let cartItem = cart[idx];
-                    let prod = products.find(p => p.id === cartItem.id);
-                    if (prod.stock > 0) {
-                        prod.stock -= 1;
-                        cartItem.qty += 1;
-                        renderProducts();
-                        renderCart();
-                    }
-                });
-            });
-
-            document.querySelectorAll('.decrease-qty').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    let idx = this.getAttribute('data-index');
-                    let cartItem = cart[idx];
-                    let prod = products.find(p => p.id === cartItem.id);
-                    prod.stock += 1;
-                    cartItem.qty -= 1;
-                    if (cartItem.qty <= 0) cart.splice(idx, 1);
-                    renderProducts();
-                    renderCart();
-                });
-            });
-        }
-
-        function calculateChange() {
-            if (activePaymentMethod !== 'cash') return;
-            let total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            let cashRaw = cashInput.value.replace(/[^0-9]/g, '');
-            let cashAmount = parseInt(cashRaw, 10) || 0;
-            let change = cashAmount - total;
-            
-            if (change >= 0) {
-                changeOutput.innerText = 'Rp ' + change.toLocaleString('id-ID');
-                changeOutput.className = 'fw-bold text-success';
-            } else {
-                changeOutput.innerText = 'Kurang Rp ' + Math.abs(change).toLocaleString('id-ID');
-                changeOutput.className = 'fw-bold text-danger';
-            }
-        }
-
-        cashInput.addEventListener('input', function() {
-            let rawValue = this.value.replace(/[^0-9]/g, '');
-            if (rawValue === '') {
-                this.value = '';
-                calculateChange();
-                return;
-            }
-            let numericValue = parseInt(rawValue, 10);
-            this.value = 'Rp ' + numericValue.toLocaleString('id-ID');
-            calculateChange();
-        });
-
-        clearCartBtn.addEventListener('click', function() {
-            cart.forEach(cartItem => {
-                let prod = products.find(p => p.id === cartItem.id);
-                if (prod) prod.stock += cartItem.qty;
-            });
-            cart = [];
-            cashInput.value = '';
-            changeOutput.innerText = 'Rp 0';
-            renderProducts();
-            renderCart();
-        });
-
-        // Simpan Transaksi ke Database via Endpoint Backend
-        processBtn.addEventListener('click', function() {
-            if (cart.length === 0) {
-                alert('Keranjang masih kosong!');
-                return;
-            }
-            
-            let total = cart.reduce((sum, item) => sum + (item.price * item.qty), 0);
-            let cashRaw = cashInput.value.replace(/[^0-9]/g, '');
-            let cash = parseInt(cashRaw, 10) || total;
-
-            if (activePaymentMethod === 'cash' && cash < total) {
-                alert('Jumlah uang tunai kurang dari total tagihan!');
-                return;
-            }
-
-            let payload = {
-                pay_amount: cash,
-                notes: `Metode: ${activePaymentMethod.toUpperCase()} | Kasir: ${activeCashier}`,
-                cart: cart.map(item => ({
-                    id: item.id,
-                    price: item.price,
-                    quantity: item.qty
-                }))
-            };
-
-            fetch('{{ route("cashier.store") }}', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
-                },
-                body: JSON.stringify(payload)
-            })
-            .then(res => res.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Transaksi berhasil diproses & disimpan ke database!');
-                    window.location.reload(); // Muat ulang agar riwayat & stok terupdate dari DB
-                } else {
-                    alert('Gagal memproses transaksi: ' + (data.message || 'Error'));
+        // Fitur Smooth Scroll saat Sub-Menu Kategori diklik
+        document.querySelectorAll('.scroll-link').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                let targetSecId = this.getAttribute('data-target-section');
+                let targetElement = document.getElementById(targetSecId);
+                if (targetElement) {
+                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
                 }
-            })
-            .catch(err => {
-                console.error(err);
-                alert('Terjadi kesalahan koneksi.');
-            });
-        });
-
-        filterBtns.forEach(btn => {
-            btn.addEventListener('click', function() {
-                filterBtns.forEach(b => b.classList.remove('active'));
-                this.classList.add('active');
-                currentFilter = this.getAttribute('data-category');
-                renderProducts();
             });
         });
 
         searchInput.addEventListener('keyup', function() {
             searchKeyword = this.value.toLowerCase().trim();
-            renderProducts();
+            renderStructuredCatalog();
         });
 
-        saveRestockBtn.addEventListener('click', function() {
-            let selectedId = parseInt(restockProductSelect.value);
-            let addQty = parseInt(restockQtyInput.value) || 0;
-            if (addQty <= 0) return;
-
-            let prod = products.find(p => p.id === selectedId);
-            if (prod) {
-                prod.stock += addQty;
-                alert(`Berhasil restock ${prod.name} sebanyak ${addQty}.`);
-                renderProducts();
-                renderCart();
-            }
-        });
-
-        applyShiftBtn.addEventListener('click', function() {
-            activeCashier = switchCashierSelect.value;
-            currentCashierName.innerText = activeCashier;
-            activeShiftName.innerText = activeCashier;
-            alert(`Shift berhasil dialihkan ke ${activeCashier}.`);
-            let modalEl = document.getElementById('shiftModal');
-            let modal = bootstrap.Modal.getInstance(modalEl);
-            modal.hide();
-        });
-
-        renderProducts();
+        renderStructuredCatalog();
     });
     </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>

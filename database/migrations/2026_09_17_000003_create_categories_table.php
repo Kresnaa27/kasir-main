@@ -14,8 +14,6 @@ return new class extends Migration
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('slug')->unique(); // Tambahkan baris ini
-            $table->string('icon')->nullable(); // Tambahkan baris ini untuk icon FontAwesome
             $table->timestamps();
         });
     }
