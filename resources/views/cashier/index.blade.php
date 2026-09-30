@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,154 +10,30 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome Icons -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <style>
-        body { background-color: #f8f9fa; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; overflow-x: hidden; }
-        
-        .main-wrapper { display: flex; width: 100%; min-height: 100vh; }
-        .sidebar {
-            width: 80px;
-            background-color: #ffffff;
-            border-right: 1px solid #dee2e6;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            padding: 20px 0;
-            position: fixed;
-            height: 100vh;
-            z-index: 1000;
-        }
-        .sidebar-logo {
-            width: 45px;
-            height: 45px;
-            background-color: #dc3545;
-            color: white;
-            font-weight: bold;
-            font-size: 1.25rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            margin-bottom: 30px;
-            box-shadow: 0 4px 10px rgba(220, 53, 69, 0.3);
-        }
-        .sidebar-menu-btn {
-            width: 50px;
-            height: 50px;
-            border-radius: 12px;
-            border: none;
-            background: transparent;
-            color: #6c757d;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 15px;
-            transition: all 0.2s;
-            position: relative;
-            cursor: pointer;
-        }
-        .sidebar-menu-btn:hover, .sidebar-menu-btn.active {
-            background-color: #dc3545;
-            color: #ffffff;
-            box-shadow: 0 4px 12px rgba(220, 53, 69, 0.25);
-        }
-        .badge-warning-dot {
-            position: absolute;
-            top: 8px;
-            right: 8px;
-            width: 10px;
-            height: 10px;
-            background-color: #ffc107;
-            border-radius: 50%;
-            border: 2px solid #fff;
-            display: none;
-        }
-
-        .content-area {
-            margin-left: 80px;
-            width: calc(100% - 80px);
-            padding: 20px 30px;
-        }
-
-        .navbar-custom { background-color: #ffffff; border-bottom: 1px solid #dee2e6; border-radius: 12px; }
-        .category-card {
-            border: none;
-            border-radius: 12px;
-            transition: all 0.2s;
-            cursor: pointer;
-            background: #ffffff;
-            color: #212529;
-        }
-        .category-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
-        .category-card.active {
-            background-color: #dc3545 !important;
-            color: #ffffff !important;
-        }
-        .category-card.active .text-muted { color: #f8f9fa !important; }
-        .category-card.active i { color: #ffffff !important; }
-        
-        .product-card {
-            border: none;
-            border-radius: 12px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-            transition: all 0.2s;
-            background: #fff;
-        }
-        .product-card:hover { transform: translateY(-3px); box-shadow: 0 6px 15px rgba(0,0,0,0.08); }
-        .product-img-wrapper {
-            height: 130px;
-            background-color: #f1f3f5;
-            border-top-left-radius: 12px;
-            border-top-right-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            overflow: hidden;
-            position: relative;
-        }
-        .product-img { width: 100%; height: 100%; object-fit: cover; }
-        .cart-section { background: #ffffff; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-
-        .payment-method-btn {
-            border: 1px solid #ced4da;
-            background: #f8f9fa;
-            color: #495057;
-            font-size: 0.8rem;
-            font-weight: 600;
-            border-radius: 8px;
-            transition: all 0.2s;
-        }
-        .payment-method-btn.active {
-            background-color: #dc3545 !important;
-            color: #ffffff !important;
-            border-color: #dc3545 !important;
-            box-shadow: 0 2px 6px rgba(220, 53, 69, 0.3);
-        }
-
-        #changeOutputContainer {
-            word-break: break-word;
-            overflow: hidden;
-        }
-        #changeOutput {
-            font-size: 1.1rem !important;
-            text-align: right;
-            display: inline-block;
-            max-width: 100%;
-        }
-
-        .badge-shift-active-pagi { background-color: #0dcaf0 !important; color: #000 !important; box-shadow: 0 0 10px rgba(13, 202, 240, 0.6); font-weight: bold; }
-        .badge-shift-active-siang { background-color: #ffc107 !important; color: #000 !important; box-shadow: 0 0 10px rgba(255, 193, 7, 0.6); font-weight: bold; }
-        .badge-shift-active-sore { background-color: #fd7e14 !important; color: #fff !important; box-shadow: 0 0 10px rgba(253, 126, 20, 0.6); font-weight: bold; }
-        .badge-shift-inactive { background-color: #6c757d !important; color: #fff !important; opacity: 0.6; }
-    </style>
+    
+    <!-- Memanggil CSS dan JS melalui Vite -->
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
 </head>
+
 <body>
+    <!-- MODAL QRIS -->
+    <div class="modal fade" id="qrisModal" tabindex="-1" aria-labelledby="qrisModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content border-0 shadow-lg text-center p-4">
+                <h5 class="fw-bold text-danger mb-3">Scan QRIS Kasir</h5>
+                <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=Pembayaran_Kasir_ID_{{ auth()->user()->id }}"
+                    class="img-fluid rounded shadow-sm mb-3" alt="QRIS Kasir">
+                <h6 class="fw-bold mb-1">{{ auth()->user()->name }}</h6>
+                <p class="text-muted small">Total Tagihan: <span id="qrisTotalTagihan" class="fw-bold text-dark">Rp 0</span></p>
+                <button type="button" class="btn btn-success w-100 fw-bold" id="confirmQrisBtn">Konfirmasi Pembayaran Selesai</button>
+            </div>
+        </div>
+    </div>
 
     <div class="main-wrapper">
-        
         <!-- SIDEBAR KIRI -->
         <div class="sidebar">
             <div class="sidebar-logo">K</div>
-
             <div class="d-flex flex-column align-items-center w-100">
                 <button class="sidebar-menu-btn active" title="Produk & Kasir">
                     <i class="fas fa-th-large fa-lg"></i>
@@ -168,7 +45,7 @@
                     <i class="fas fa-boxes fa-lg"></i>
                     <span class="badge-warning-dot" id="sidebarWarningDot"></span>
                 </button>
-                <button class="sidebar-menu-btn mt-3" title="Kasir Shift: Dewa" data-bs-toggle="modal" data-bs-target="#shiftModal">
+                <button class="sidebar-menu-btn mt-3" title="Kasir Shift" data-bs-toggle="modal" data-bs-target="#shiftModal">
                     <i class="fas fa-user-shield fa-lg"></i>
                 </button>
             </div>
@@ -185,7 +62,6 @@
 
         <!-- KONTEN UTAMA -->
         <div class="content-area">
-
             <!-- Navbar Header -->
             <nav class="navbar navbar-expand-lg navbar-custom px-4 py-2 mb-4 shadow-sm">
                 <div class="container-fluid">
@@ -193,22 +69,24 @@
                         <i class="fas fa-cash-register me-2"></i> Kasir KOPDES - Point of Sale
                     </span>
                     <div class="d-flex align-items-center">
+                        
+                        <!-- JAM & TANGGAL REALTIME -->
+                        <div class="bg-white px-3 py-1 rounded-pill border me-3 d-flex align-items-center shadow-sm">
+                            <i class="fas fa-clock text-primary me-2"></i>
+                            <span class="small fw-bold text-dark" id="realtimeClock">Memuat waktu...</span>
+                        </div>
+
                         <div class="bg-light px-3 py-1 rounded-pill border me-3 d-flex align-items-center">
                             <i class="fas fa-user-circle text-danger me-2"></i>
-                            <span class="small fw-bold text-secondary">Kasir Shift: <span class="text-dark" id="currentCashierName">Dewa</span></span>
+                            <span class="small fw-bold text-secondary">Kasir: <span class="text-dark" id="currentCashierName">{{ auth()->user()->name }}</span></span>
                         </div>
-                        <span class="badge bg-warning text-dark px-2 py-1 small fw-semibold" id="globalStockAlert" style="font-size: 0.75rem; display: none;">
-                            <i class="fas fa-exclamation-triangle me-1"></i> Stok Menipis!
-                        </span>
                     </div>
                 </div>
             </nav>
 
             <div class="row g-4">
-                
                 <!-- KOLOM KIRI: Katalog Produk & Kategori -->
                 <div class="col-lg-8">
-                    
                     <!-- Search Bar -->
                     <div class="input-group mb-4 shadow-sm rounded-pill overflow-hidden bg-white border">
                         <span class="input-group-text bg-white border-0 ps-4 text-danger"><i class="fas fa-search"></i></span>
@@ -216,7 +94,7 @@
                         <button class="btn btn-danger px-4 fw-semibold" type="button">Cari</button>
                     </div>
 
-                   <!-- Card Kategori Utama (Desain Semula dengan Dropdown Panah) -->
+                    <!-- Kategori Utama -->
                     <div class="row g-3 mb-4">
                         <div class="col-md-3 col-6">
                             <div class="card category-card active p-3 shadow-sm filter-btn" data-category="semua">
@@ -232,7 +110,7 @@
                             </div>
                         </div>
 
-                        <!-- Kategori 1: Makanan & Snack dengan Dropdown -->
+                        <!-- Dropdown Makanan -->
                         <div class="col-md-3 col-6">
                             <div class="card category-card p-3 shadow-sm dropdown-toggle-custom" data-target="dropdown-makanan" style="cursor: pointer;">
                                 <div class="d-flex align-items-center justify-content-between">
@@ -245,14 +123,13 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Sub Menu Dropdown Makanan -->
                             <div class="card shadow-sm border-0 position-absolute mt-1 p-2 bg-white rounded-3 sub-dropdown-menu" id="dropdown-makanan" style="display: none; z-index: 99; width: 220px;">
                                 <a href="#sec-makanan-ringan" class="dropdown-item py-1 px-2 rounded small fw-semibold text-dark text-decoration-none d-block scroll-link" data-target-section="sec-makanan-ringan">↳ Makanan Ringan & Snack</a>
                                 <a href="#sec-makanan-instan" class="dropdown-item py-1 px-2 rounded small fw-semibold text-dark text-decoration-none d-block scroll-link mt-1" data-target-section="sec-makanan-instan">↳ Makanan Instan</a>
                             </div>
                         </div>
 
-                        <!-- Kategori 2: Minuman -->
+                        <!-- Dropdown Minuman -->
                         <div class="col-md-3 col-6">
                             <div class="card category-card p-3 shadow-sm dropdown-toggle-custom" data-target="dropdown-minuman" style="cursor: pointer;">
                                 <div class="d-flex align-items-center justify-content-between">
@@ -265,14 +142,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Sub Menu Dropdown Minuman -->
                             <div class="card shadow-sm border-0 position-absolute mt-1 p-2 bg-white rounded-3 sub-dropdown-menu" id="dropdown-minuman" style="display: none; z-index: 99; width: 220px;">
                                 <a href="#sec-minuman-dingin" class="dropdown-item py-1 px-2 rounded small fw-semibold text-dark text-decoration-none d-block scroll-link" data-target-section="sec-minuman-dingin">↳ Minuman Dingin & Botol</a>
-                                <a href="#sec-minuman-hangat" class="dropdown-item py-1 px-2 rounded small fw-semibold text-dark text-decoration-none d-block scroll-link mt-1" data-target-section="sec-minuman-hangat">↳ Kopi & Teh Hangat</a>
                             </div>
                         </div>
 
-                        <!-- Kategori 3: Kebutuhan Harian -->
+                        <!-- Dropdown Kebutuhan -->
                         <div class="col-md-3 col-6">
                             <div class="card category-card p-3 shadow-sm dropdown-toggle-custom" data-target="dropdown-harian" style="cursor: pointer;">
                                 <div class="d-flex align-items-center justify-content-between">
@@ -285,23 +160,14 @@
                                     </div>
                                 </div>
                             </div>
-                            <!-- Sub Menu Dropdown Harian -->
                             <div class="card shadow-sm border-0 position-absolute mt-1 p-2 bg-white rounded-3 sub-dropdown-menu" id="dropdown-harian" style="display: none; z-index: 99; width: 220px;">
                                 <a href="#sec-kebersihan" class="dropdown-item py-1 px-2 rounded small fw-semibold text-dark text-decoration-none d-block scroll-link" data-target-section="sec-kebersihan">↳ Kebersihan & Rumah Tangga</a>
                             </div>
                         </div>
                     </div>
 
-                    <!-- Katalog Produk Tersusun Rapi Berdasarkan Kategori & Sub-Kategori -->
-                    <div id="structuredCatalogContainer">
-                        <!-- Render kelompok produk secara dinamis via JavaScript -->
-                    </div>
-
-                    <!-- Daftar Produk -->
-                    <h5 class="fw-bold mb-3 text-dark">Katalog Produk</h5>
-                    <div class="row g-3" id="productListContainer">
-                        <!-- Render via JS -->
-                    </div>
+                    <!-- Katalog Produk Tersusun Berkelompok -->
+                    <div id="structuredCatalogContainer"></div>
                 </div>
 
                 <!-- KOLOM KANAN: Invoice Pembayaran -->
@@ -309,7 +175,7 @@
                     <div class="cart-section p-4 sticky-top" style="top: 20px;">
                         <h5 class="fw-bold mb-3 text-dark"><i class="fas fa-shopping-cart text-danger me-2"></i> Invoice Pembayaran</h5>
                         <hr>
-                        
+
                         <div class="table-responsive mb-3" style="max-height: 200px; overflow-y: auto;">
                             <table class="table table-sm align-middle">
                                 <thead class="text-muted small">
@@ -332,7 +198,7 @@
                             <h3 class="fw-bold text-warning mb-0" id="grandTotal">Rp 0</h3>
                         </div>
 
-                        <!-- Pilihan Metode Pembayaran -->
+                        <!-- Metode Pembayaran -->
                         <div class="mb-3">
                             <label class="form-label text-secondary small fw-semibold">Metode Pembayaran</label>
                             <div class="row g-2">
@@ -356,8 +222,11 @@
 
                         <!-- Input Cash / Tunai -->
                         <div class="mb-3" id="cashPaymentSection">
-                            <label class="form-label text-secondary small fw-semibold">Jumlah Uang Tunai (Rp)</label>
-                            <input type="text" id="cashInput" class="form-control fw-bold text-end" value="" placeholder="0" inputmode="numeric">
+                            <label class="form-label text-secondary small fw-semibold">Jumlah Uang Tunai</label>
+                            <div class="input-group">
+                                <span class="input-group-text bg-light fw-bold text-secondary">Rp</span>
+                                <input type="text" id="cashInput" class="form-control fw-bold text-end" placeholder="0" inputmode="numeric">
+                            </div>
                         </div>
 
                         <div class="mb-3 bg-light p-2 rounded-3 border d-flex flex-column" id="changeSection">
@@ -373,37 +242,22 @@
                             <button class="btn btn-danger py-2 fw-bold shadow-sm" id="processBtn">
                                 <i class="fas fa-check-circle me-1"></i> Proses Transaksi & Cetak
                             </button>
-                            <button class="btn btn-outline-secondary btn-sm fw-semibold" id="clearCartBtn">
-                                <i class="fas fa-trash-alt me-1"></i> Kosongkan Keranjang
-                            </button>
                         </div>
-
                     </div>
                 </div>
-
             </div>
         </div>
     </div>
 
-    <!-- MODAL RIWAYAT PENJUALAN HARI INI -->
+    <!-- MODAL RIWAYAT -->
     <div class="modal fade" id="historyModal" tabindex="-1">
         <div class="modal-dialog modal-lg modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg rounded-4">
                 <div class="modal-header bg-danger text-white">
-                    <h5 class="modal-title fw-bold fs-6"><i class="fas fa-receipt me-2"></i> Catatan & Riwayat Penjualan Pegawai Hari Ini</h5>
+                    <h5 class="modal-title fw-bold fs-6"><i class="fas fa-receipt me-2"></i> Riwayat Penjualan Hari Ini</h5>
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4">
-                    <div class="alert alert-light border d-flex justify-content-between align-items-center mb-3 py-2">
-                        <div>
-                            <i class="fas fa-calendar-alt text-danger me-1"></i> <span id="currentDateText" class="fw-bold text-dark">--</span>
-                        </div>
-                        <div>
-                            <i class="fas fa-clock text-danger me-1"></i> <span id="currentTimeText" class="fw-bold text-dark">--</span>
-                        </div>
-                    </div>
-
-                    <!-- Tabel Transaksi Hari Ini Dinamis dari Database -->
                     <div class="table-responsive">
                         <table class="table table-bordered align-middle small">
                             <thead class="table-dark text-center">
@@ -415,38 +269,37 @@
                                     <th>Detail Barang</th>
                                 </tr>
                             </thead>
-                            <tbody id="todayHistoryTableBody">
-                                @forelse($todayTransactions as $tx)
-                                <tr>
-                                    <td class="text-center fw-bold">{{ $tx->created_at->format('H:i') }} WITA</td>
-                                    <td class="fw-bold text-success text-end">Rp {{ number_format($tx->total_amount, 0, ',', '.') }}</td>
-                                    <td class="text-end">Rp {{ number_format($tx->pay_amount, 0, ',', '.') }}</td>
-                                    <td class="text-end">Rp {{ number_format($tx->change_amount, 0, ',', '.') }}</td>
-                                    <td>
-                                        <ul class="mb-0 ps-3">
-                                            @foreach($tx->details as $detail)
-                                                <li>{{ $detail->product->name ?? 'Produk' }} x {{ $detail->quantity }}</li>
-                                            @endforeach
-                                        </ul>
-                                    </td>
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan="5" class="text-center text-muted py-3">Belum ada transaksi untuk hari ini.</td>
-                                </tr>
-                                @endforelse
+                            <tbody>
+                                @if(isset($todayTransactions) && count($todayTransactions) > 0)
+                                    @foreach($todayTransactions as $tx)
+                                        <tr>
+                                            <td class="text-center fw-bold">{{ $tx->created_at->format('H:i') }} WITA</td>
+                                            <td class="fw-bold text-success text-end">Rp {{ number_format($tx->total_amount, 0, ',', '.') }}</td>
+                                            <td class="text-end">Rp {{ number_format($tx->pay_amount, 0, ',', '.') }}</td>
+                                            <td class="text-end">Rp {{ number_format($tx->change_amount, 0, ',', '.') }}</td>
+                                            <td>
+                                                <ul class="mb-0 ps-3">
+                                                    @foreach($tx->details as $detail)
+                                                        <li>{{ $detail->product->name ?? 'Produk' }} x {{ $detail->quantity }}</li>
+                                                    @endforeach
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @else
+                                    <tr>
+                                        <td colspan="5" class="text-center text-muted py-3">Belum ada transaksi untuk hari ini.</td>
+                                    </tr>
+                                @endif
                             </tbody>
                         </table>
                     </div>
-                </div>
-                <div class="modal-footer bg-light">
-                    <button type="button" class="btn btn-secondary btn-sm px-4 fw-semibold" data-bs-dismiss="modal">Tutup</button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL RESTOCK STOK -->
+    <!-- MODAL RESTOCK -->
     <div class="modal fade" id="stockModal" tabindex="-1">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content border-0 shadow-lg rounded-4">
@@ -455,12 +308,8 @@
                     <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
                 </div>
                 <div class="modal-body p-4">
-                    <div class="alert alert-warning d-flex align-items-center mb-3" role="alert">
-                        <i class="fas fa-exclamation-triangle fa-2x me-3 text-warning"></i>
-                        <div><strong>Perhatian!</strong> Produk dengan stok menipis (&le; 5) perlu segera di-restock.</div>
-                    </div>
                     <div class="mb-3">
-                        <label class="form-label fw-semibold small">Pilih Produk untuk Restock</label>
+                        <label class="form-label fw-semibold small">Pilih Produk</label>
                         <select class="form-select form-select-sm" id="restockProductSelect"></select>
                     </div>
                     <div class="mb-3">
@@ -468,46 +317,16 @@
                         <input type="number" id="restockQtyInput" class="form-control form-control-sm" value="10" min="1">
                     </div>
                     <button type="button" class="btn btn-danger w-100 fw-bold btn-sm py-2" id="saveRestockBtn">
-                        <i class="fas fa-plus-circle me-1"></i> Simpan & Restock Produk
+                        <i class="fas fa-plus-circle me-1"></i> Simpan & Restock
                     </button>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- MODAL SHIFT KASIR -->
-    <div class="modal fade" id="shiftModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content border-0 shadow-lg rounded-4">
-                <div class="modal-header bg-dark text-white">
-                    <h5 class="modal-title fw-bold fs-6"><i class="fas fa-user-shield me-2"></i> Pengaturan Shift & Kasir</h5>
-                    <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
-                </div>
-                <div class="modal-body p-4">
-                    <div class="mb-3 p-3 bg-light rounded-3 border">
-                        <span class="text-muted small d-block">Kasir Aktif Saat Ini:</span>
-                        <h5 class="fw-bold text-danger mb-0"><span id="activeShiftName">Dewa</span> <span class="badge bg-success fs-6 ms-2" id="activeShiftTime">Shift Pagi</span></h5>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label fw-semibold small">Ganti Kasir / Shift Berikutnya</label>
-                        <select class="form-select form-select-sm" id="switchCashierSelect">
-                            <option value="Dewa">Dewa (Shift Pagi)</option>
-                            <option value="Kresnaa">Kresnaa (Shift Siang)</option>
-                            <option value="Surya">Surya (Shift Sore)</option>
-                        </select>
-                    </div>
-                    <button type="button" class="btn btn-dark w-100 fw-bold btn-sm py-2" id="applyShiftBtn">
-                        <i class="fas fa-sync-alt me-1"></i> Terapkan & Ganti Kasir Aktif
-                    </button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <!-- Script JavaScript Dinamis -->
+    <!-- Variabel Global untuk JS -->
     <script>
-    document.addEventListener("DOMContentLoaded", function() {
-        let products = @json($products).map(p => ({
+        window.productsData = @json($products ?? []).map(p => ({
             id: p.id,
             name: p.name,
             category: p.category ? p.category.name.toLowerCase() : 'lainnya',
@@ -515,130 +334,13 @@
             stock: p.stock,
             img: p.image ? `/storage/${p.image}` : 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=300'
         }));
-
-        // Logika Toggle Sub-Dropdown Kategori
-        const dropdownToggles = document.querySelectorAll('.dropdown-toggle-custom');
-        dropdownToggles.forEach(toggle => {
-            toggle.addEventListener('click', function(e) {
-                e.stopPropagation();
-                let targetId = this.getAttribute('data-target');
-                let targetMenu = document.getElementById(targetId);
-                
-                // Tutup dropdown lain yang terbuka
-                document.querySelectorAll('.sub-dropdown-menu').forEach(menu => {
-                    if (menu.id !== targetId) menu.style.display = 'none';
-                });
-
-                // Toggle menu saat ini
-                if (targetMenu.style.display === 'block') {
-                    targetMenu.style.display = 'none';
-                } else {
-                    targetMenu.style.display = 'block';
-                }
-            });
-        });
-
-        // Tutup dropdown jika klik di luar
-        document.addEventListener('click', function() {
-            document.querySelectorAll('.sub-dropdown-menu').forEach(menu => {
-                menu.style.display = 'none';
-            });
-        });
-
-        // Fungsi Render Katalog Produk Tersusun Rapi Berkelompok
-        const structuredCatalogContainer = document.getElementById('structuredCatalogContainer');
-        const searchInput = document.getElementById('searchProduct');
-        let searchKeyword = '';
-
-        function renderStructuredCatalog() {
-            structuredCatalogContainer.innerHTML = '';
-
-            // Kelompokkan produk berdasarkan sub-kategori tiruan/logika nama
-            let groups = [
-                { id: 'sec-makanan-ringan', title: '1. Makanan & Snack', subtitle: 'Makanan Ringan & Snack', filterFn: p => p.category.includes('makanan') || p.category.includes('snack') },
-                { id: 'sec-makanan-instan', title: '', subtitle: 'Makanan Instan', filterFn: p => p.category.includes('instan') || p.name.toLowerCase().includes('mie') },
-                { id: 'sec-minuman-dingin', title: '2. Minuman', subtitle: 'Minuman Dingin & Botol', filterFn: p => p.category.includes('minuman') || p.category.includes('drink') },
-                { id: 'sec-kebersihan', title: '3. Kebutuhan Harian & Rumah Tangga', subtitle: 'Kebersihan & Perawatan', filterFn: p => p.category.includes('kebersihan') || p.category.includes('sabun') || p.category.includes('rumah') }
-            ];
-
-            groups.forEach(group => {
-                let filteredProducts = products.filter(group.filterFn);
-                if (searchKeyword) {
-                    filteredProducts = filteredProducts.filter(p => p.name.toLowerCase().includes(searchKeyword));
-                }
-                if (filteredProducts.length === 0 && searchKeyword) return;
-
-                let sectionHtml = `
-                    <div class="mb-4 catalog-section-group" id="${group.id}">
-                        ${group.title ? `<h5 class="fw-bold text-dark mb-1 border-bottom pb-2"><i class="fas fa-layer-group text-danger me-2"></i>${group.title}</h5>` : ''}
-                        <h6 class="text-secondary fw-semibold mt-2 mb-3 ms-1" style="font-size: 0.9rem;">↳ ${group.subtitle}</h6>
-                        <div class="row g-3">
-                `;
-
-                filteredProducts.forEach(prod => {
-                    let isLowStock = prod.stock <= 5;
-                    sectionHtml += `
-                        <div class="col-md-4 col-sm-6 product-item">
-                            <div class="card product-card h-100 ${isLowStock ? 'border-warning border-2' : ''}">
-                                <div class="product-img-wrapper">
-                                    ${isLowStock ? `
-                                        <span class="position-absolute top-0 start-0 badge bg-warning text-dark m-2 shadow-sm" style="font-size: 0.65rem; z-index: 2;">
-                                            <i class="fas fa-exclamation-triangle"></i> Stok Menipis (${prod.stock})
-                                        </span>
-                                    ` : `
-                                        <span class="position-absolute top-0 end-0 badge bg-dark text-white m-2 opacity-75 shadow-sm" style="font-size: 0.7rem; z-index: 2;">
-                                            Stok: ${prod.stock}
-                                        </span>
-                                    `}
-                                    <img src="${prod.img}" class="product-img" alt="${prod.name}" onerror="this.src='https://images.unsplash.com/photo-1542838132-92c53300491e?w=300'">
-                                </div>
-                                <div class="card-body p-3 d-flex flex-column justify-content-between">
-                                    <div>
-                                        <span class="badge bg-danger bg-opacity-10 text-danger mb-1" style="font-size: 0.65rem; text-transform: capitalize;">${prod.category}</span>
-                                        <h6 class="fw-bold text-dark mb-1" style="font-size: 0.95rem;">${prod.name}</h6>
-                                        <p class="text-danger fw-bold mb-3">Rp ${prod.price.toLocaleString('id-ID')}</p>
-                                    </div>
-                                    <button class="btn btn-outline-danger btn-sm w-100 fw-semibold rounded-pill add-to-cart-btn" data-id="${prod.id}" ${prod.stock <= 0 ? 'disabled' : ''}>
-                                        <i class="fas fa-plus me-1"></i> ${prod.stock <= 0 ? 'Stok Habis' : 'Tambah'}
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    `;
-                });
-
-                sectionHtml += `</div></div>`;
-                structuredCatalogContainer.insertAdjacentHTML('beforeend', sectionHtml);
-            });
-
-            // Pasang kembali event listener tombol tambah ke keranjang
-            document.querySelectorAll('.add-to-cart-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    addToCart(parseInt(this.getAttribute('data-id')));
-                });
-            });
-        }
-
-        // Fitur Smooth Scroll saat Sub-Menu Kategori diklik
-        document.querySelectorAll('.scroll-link').forEach(link => {
-            link.addEventListener('click', function(e) {
-                e.preventDefault();
-                let targetSecId = this.getAttribute('data-target-section');
-                let targetElement = document.getElementById(targetSecId);
-                if (targetElement) {
-                    targetElement.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                }
-            });
-        });
-
-        searchInput.addEventListener('keyup', function() {
-            searchKeyword = this.value.toLowerCase().trim();
-            renderStructuredCatalog();
-        });
-
-        renderStructuredCatalog();
-    });
+        window.transactionUrl = "{{ route('cashier.transaction') }}";
+        window.restockUrl = "{{ route('cashier.restock') }}";
+        window.authUserName = "{{ auth()->user()->name ?? 'Kasir' }}";
     </script>
+
+    <!-- Bootstrap Bundle JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
+
 </html>

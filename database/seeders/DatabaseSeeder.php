@@ -14,16 +14,7 @@ class DatabaseSeeder extends Seeder
      * Seed the application's database.
      */
     public function run(): void
-    {
-        // 1. Buat Akun Admin & Kasir
-        User::create([
-            'name' => 'Administrator',
-            'email' => 'admin@kasir.com',
-            'password' => Hash::make('password'),
-            'role' => 'admin',
-        ]);
-        
-
+    {   
         User::create([
             'name' => 'Kasir Toko',
             'email' => 'kasir@kasir.com',

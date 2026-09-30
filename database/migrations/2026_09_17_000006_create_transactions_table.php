@@ -7,17 +7,23 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration
 {
     public function up(): void
-    {
-        Schema::create('transactions', function (Blueprint $table) {
-            $table->id(); // Hanya kolom 'id' saja yang auto_increment primary key
-            $table->string('invoice_number');
-            $table->integer('total_amount'); // Ubah jadi integer biasa
-            $table->integer('paid_amount');  // Ubah jadi integer biasa
-            $table->integer('change_amount');// Ubah jadi integer biasa
-            $table->string('payment_method');
-            $table->timestamps();
-        });
-    }
+{
+    Schema::create('transactions', function (Blueprint $table) {
+        $table->id();
+        // Pastikan dua relasi ini ada
+        $table->foreignId('shift_id')->nullable()->constrained('shifts')->nullOnDelete(); 
+        $table->foreignId('user_id')->constrained('users')->cascadeOnDelete(); 
+        
+        $table->string('invoice_number');
+        $table->decimal('total_amount', 15, 2);
+        $table->decimal('pay_amount', 15, 2)->default(0); 
+        $table->decimal('paid_amount', 15, 2)->default(0);
+        $table->decimal('change_amount', 15, 2);
+        $table->string('payment_method');
+        $table->text('notes')->nullable();
+        $table->timestamps();
+    });
+}
 
     public function down(): void
     {
