@@ -116,7 +116,7 @@
                     <label class="form-label text-secondary small fw-semibold">Email Address</label>
                     <div class="input-group">
                         <span class="input-group-text border-end-0"><i class="fas fa-envelope"></i></span>
-                        <input type="email" name="email" class="form-control border-start-0" placeholder="admin@kasir.com" required autofocus>
+                        <input type="email" name="email" class="form-control border-start-0" placeholder="kasir@gmail.com" required autofocus>
                     </div>
                 </div>
 
@@ -144,8 +144,7 @@
 
             <div class="border-top pt-3 mt-3 text-center">
                 <small class="text-muted d-block fw-semibold mb-1">Akun Demo:</small>
-                <small class="text-secondary d-block">Admin: admin@kasir.com / password</small>
-                <small class="text-secondary d-block">Kasir: kasir@kasir.com / password</small>
+                <small class="text-secondary d-block">Kasir: kasir@gmail.com / password</small>
             </div>
         </div>
 
