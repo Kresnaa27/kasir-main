@@ -10,9 +10,8 @@ class ShiftController extends Controller
 {
     public function getTodayShifts()
     {
-        // Mendapatkan tanggal hari ini (format: YYYY-MM-DD)
-        $today = Carbon::today()->toDateString();
-
+        // Mengambil tanggal hari ini secara spesifik berdasarkan zona waktu WITA
+        $today = Carbon::today('Asia/Makassar')->toDateString();
         // Cek data shift di database berdasarkan tanggal hari ini
         $shifts = Shift::where('date', $today)->get();
 

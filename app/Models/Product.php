@@ -9,17 +9,8 @@ class Product extends Model
 {
     use HasFactory;
 
-    protected $fillable = ['category_id', 'barcode', 'name', 'price', 'stock', 'image'];
-
-    // Produk milik satu kategori
-    public function category()
-    {
-        return $this->belongsTo(Category::class);
-    }
+    protected $fillable = ['category_id', 'name', 'price', 'description', 'is_best_seller', 'image'];
+    public function category() { return $this->belongsTo(Category::class); }
 
     // Produk bisa ada di banyak transaksi detail
-    public function transactionDetails()
-    {
-        return $this->hasMany(TransactionDetail::class);
-    }
 }
