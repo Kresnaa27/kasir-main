@@ -105,7 +105,7 @@
                     </div>
                     <div class="flex justify-between items-center mt-3 pt-2 border-t border-gray-100">
                         <span class="font-bold text-coffee-800">Rp 28.000</span>
-                        <button class="w-8 h-8 rounded-full bg-sage-100 text-sage-700 flex items-center justify-center font-bold hover:bg-sage-600 hover:text-white transition">
+                        <button onclick="addToCart(1)" class="w-8 h-8 rounded-full bg-sage-100 text-sage-700 flex items-center justify-center font-bold hover:bg-sage-600 hover:text-white transition">
                             <i class="fa-solid fa-plus text-xs"></i>
                         </button>
                     </div>
@@ -122,9 +122,9 @@
                     </div>
                     <div class="flex justify-between items-center mt-3 pt-2 border-t border-gray-100">
                         <span class="font-bold text-coffee-800">Rp 22.000</span>
-                        <button class="w-8 h-8 rounded-full bg-sage-100 text-sage-700 flex items-center justify-center font-bold hover:bg-sage-600 hover:text-white transition">
-                            <i class="fa-solid fa-plus text-xs"></i>
-                        </button>
+                        <button onclick="addToCart(2)" class="w-8 h-8 rounded-full bg-sage-100 text-sage-700 flex items-center justify-center font-bold hover:bg-sage-600 hover:text-white transition">
+    <i class="fa-solid fa-plus text-xs"></i>
+</button>
                     </div>
                 </div>
 
@@ -139,9 +139,9 @@
                     </div>
                     <div class="flex justify-between items-center mt-3 pt-2 border-t border-gray-100">
                         <span class="font-bold text-coffee-800">Rp 25.000</span>
-                        <button class="w-8 h-8 rounded-full bg-sage-100 text-sage-700 flex items-center justify-center font-bold hover:bg-sage-600 hover:text-white transition">
-                            <i class="fa-solid fa-plus text-xs"></i>
-                        </button>
+                        <button onclick="addToCart(3)" class="w-8 h-8 rounded-full bg-sage-100 text-sage-700 flex items-center justify-center font-bold hover:bg-sage-600 hover:text-white transition">
+    <i class="fa-solid fa-plus text-xs"></i>
+</button>
                     </div>
                 </div>
 
@@ -164,47 +164,13 @@
                 </div>
             </div>
 
-            <!-- CART ITEMS LIST -->
-            <div class="flex-1 overflow-y-auto p-4 space-y-3">
-                
-                <!-- Cart Item 1 -->
-                <div class="p-3 rounded-xl bg-coffee-50 border border-coffee-100 flex flex-col gap-2">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h4 class="font-bold text-sm text-coffee-900">Caffe Latte</h4>
-                            <span class="text-xs text-sage-700 font-medium">Hot • Normal Sugar • Oat Milk</span>
-                        </div>
-                        <span class="font-bold text-sm text-coffee-800">Rp 33.000</span>
-                    </div>
-                    <div class="flex justify-between items-center pt-1">
-                        <button class="text-xs text-red-500 hover:underline"><i class="fa-regular fa-trash-can"></i> Hapus</button>
-                        <div class="flex items-center gap-2">
-                            <button class="w-6 h-6 rounded-lg bg-white border border-coffee-200 text-coffee-800 flex items-center justify-center font-bold text-xs">-</button>
-                            <span class="text-xs font-bold w-4 text-center">1</span>
-                            <button class="w-6 h-6 rounded-lg bg-coffee-800 text-white flex items-center justify-center font-bold text-xs">+</button>
-                        </div>
-                    </div>
+           <!-- CART ITEMS LIST -->
+            <div id="cartItemsContainer" class="flex-1 overflow-y-auto p-4 space-y-3">
+                <!-- Data keranjang akan masuk secara dinamis lewat JavaScript di sini -->
+                <div class="text-center text-gray-400 py-10 text-xs">
+                    <i class="fa-solid fa-basket-shopping text-2xl mb-2"></i>
+                    <p>Pesanan masih kosong</p>
                 </div>
-
-                <!-- Cart Item 2 -->
-                <div class="p-3 rounded-xl bg-coffee-50 border border-coffee-100 flex flex-col gap-2">
-                    <div class="flex justify-between items-start">
-                        <div>
-                            <h4 class="font-bold text-sm text-coffee-900">Butter Croissant</h4>
-                            <span class="text-xs text-gray-500">Warmed</span>
-                        </div>
-                        <span class="font-bold text-sm text-coffee-800">Rp 25.000</span>
-                    </div>
-                    <div class="flex justify-between items-center pt-1">
-                        <button class="text-xs text-red-500 hover:underline"><i class="fa-regular fa-trash-can"></i> Hapus</button>
-                        <div class="flex items-center gap-2">
-                            <button class="w-6 h-6 rounded-lg bg-white border border-coffee-200 text-coffee-800 flex items-center justify-center font-bold text-xs">-</button>
-                            <span class="text-xs font-bold w-4 text-center">1</span>
-                            <button class="w-6 h-6 rounded-lg bg-coffee-800 text-white flex items-center justify-center font-bold text-xs">+</button>
-                        </div>
-                    </div>
-                </div>
-
             </div>
 
             <!-- PAYMENT SUMMARY & ACTION -->
@@ -212,15 +178,15 @@
                 <div class="space-y-1.5 text-xs text-coffee-900">
                     <div class="flex justify-between">
                         <span class="text-gray-500">Subtotal</span>
-                        <span class="font-semibold">Rp 58.000</span>
+                        <span id="subtotalText" class="font-semibold">Rp 0</span>
                     </div>
                     <div class="flex justify-between">
                         <span class="text-gray-500">Pajak (10%)</span>
-                        <span class="font-semibold">Rp 5.800</span>
+                        <span id="taxText" class="font-semibold">Rp 0</span>
                     </div>
                     <div class="flex justify-between pt-2 border-t border-coffee-200 text-sm font-bold text-coffee-900">
                         <span>Total Pembayaran</span>
-                        <span class="text-base text-coffee-800">Rp 63.800</span>
+                        <span id="grandTotalText" class="text-base text-coffee-800">Rp 0</span>
                     </div>
                 </div>
 
@@ -246,6 +212,166 @@
         </div>
 
     </div>
+<!-- SCRIPT INTERAKTIF TOMBOL & KERANJANG POS -->
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Data Produk Katalog (Bisa disesuaikan dengan data database Blade nantinya)
+        const products = [
+            { id: 1, name: "Caffe Latte", price: 28000, desc: "Espresso + Steamed Milk" },
+            { id: 2, name: "Iced Americano", price: 22000, desc: "Double Shot + Mineral Water" },
+            { id: 3, name: "Butter Croissant", price: 25000, desc: "Freshly Baked" }
+        ];
 
+        let cart = [];
+
+        // Fungsi Render / Update Tampilan Keranjang
+        function updateCartUI() {
+            const container = document.getElementById('cartItemsContainer');
+            const subtotalEl = document.getElementById('subtotalText');
+            const taxEl = document.getElementById('taxText');
+            const grandTotalEl = document.getElementById('grandTotalText');
+            
+            if (!container) return;
+
+            if (cart.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-gray-400 py-10 text-xs">
+                        <i class="fa-solid fa-basket-shopping text-2xl mb-2"></i>
+                        <p>Pesanan masih kosong</p>
+                    </div>
+                `;
+                subtotalEl.innerText = "Rp 0";
+                taxEl.innerText = "Rp 0";
+                grandTotalEl.innerText = "Rp 0";
+                return;
+            }
+
+            container.innerHTML = '';
+            let subtotal = 0;
+
+            cart.forEach(item => {
+                let itemTotal = item.price * item.quantity;
+                subtotal += itemTotal;
+
+                container.innerHTML += `
+                    <div class="p-3 rounded-xl bg-coffee-50 border border-coffee-100 flex flex-col gap-2">
+                        <div class="flex justify-between items-start">
+                            <div>
+                                <h4 class="font-bold text-sm text-coffee-900">${item.name}</h4>
+                                <span class="text-xs text-sage-700 font-medium">${item.desc}</span>
+                            </div>
+                            <span class="font-bold text-sm text-coffee-800">Rp ${itemTotal.toLocaleString('id-ID')}</span>
+                        </div>
+                        <div class="flex justify-between items-center pt-1">
+                            <button onclick="removeItem(${item.id})" class="text-xs text-red-500 hover:underline"><i class="fa-regular fa-trash-can"></i> Hapus</button>
+                            <div class="flex items-center gap-2">
+                                <button onclick="decreaseQty(${item.id})" class="w-6 h-6 rounded-lg bg-white border border-coffee-200 text-coffee-800 flex items-center justify-center font-bold text-xs">-</button>
+                                <span class="text-xs font-bold w-4 text-center">${item.quantity}</span>
+                                <button onclick="increaseQty(${item.id})" class="w-6 h-6 rounded-lg bg-coffee-800 text-white flex items-center justify-center font-bold text-xs">+</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+
+            let tax = subtotal * 0.10;
+            let grandTotal = subtotal + tax;
+
+            subtotalEl.innerText = `Rp ${subtotal.toLocaleString('id-ID')}`;
+            taxEl.innerText = `Rp ${tax.toLocaleString('id-ID')}`;
+            grandTotalEl.innerText = `Rp ${grandTotal.toLocaleString('id-ID')}`;
+        }
+
+        // Fungsi Tambah Produk ke Keranjang (Dipicu dari tombol plus di produk)
+        window.addToCart = function(productId) {
+            let product = products.find(p => p.id === productId);
+            if (!product) return;
+
+            let existingItem = cart.find(item => item.id === productId);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ ...product, quantity: 1 });
+            }
+            updateCartUI();
+        };
+
+        // Fungsi Tambah Qty di Keranjang
+        window.increaseQty = function(productId) {
+            let item = cart.find(i => i.id === productId);
+            if (item) {
+                item.quantity += 1;
+                updateCartUI();
+            }
+        };
+
+        // Fungsi Kurang Qty di Keranjang
+        window.decreaseQty = function(productId) {
+            let item = cart.find(i => i.id === productId);
+            if (item) {
+                item.quantity -= 1;
+                if (item.quantity <= 0) {
+                    cart = cart.filter(i => i.id !== productId);
+                }
+                updateCartUI();
+            }
+        };
+
+        // Fungsi Hapus Item
+        window.removeItem = function(productId) {
+            cart = cart.filter(i => i.id !== productId);
+            updateCartUI();
+        };
+
+        // Hubungkan tombol plus (+) di setiap kartu produk katalog agar interaktif
+        // Berikan atribut onclick="addToCart(1)" dsb pada tombol plus di HTML produk katalogmu
+        
+        // -------------------------------------------------------------
+        // Global Click Listener untuk Tombol Toggle (Dine In & Pembayaran)
+        // -------------------------------------------------------------
+        document.addEventListener("click", function(e) {
+            let btn = e.target.closest('button');
+            if (!btn) return;
+
+            // 1. Logika Toggle Dine In / Takeaway
+            let modeContainer = btn.closest('.flex.bg-coffee-200\\/50');
+            if (modeContainer) {
+                let modeButtons = modeContainer.querySelectorAll('button');
+                modeButtons.forEach(b => {
+                    b.classList.remove('bg-coffee-800', 'text-white', 'shadow-sm', 'hover:text-white');
+                    b.classList.add('text-coffee-800', 'hover:text-coffee-900');
+                });
+                btn.classList.remove('text-coffee-800', 'hover:text-coffee-900');
+                btn.classList.add('bg-coffee-800', 'text-white', 'shadow-sm', 'hover:text-white');
+                return;
+            }
+
+            // 2. Logika Toggle Metode Pembayaran (Tunai, QRIS, Debit/Kredit)
+            let paymentGrid = btn.closest('.grid.grid-cols-3');
+            if (paymentGrid) {
+                let payButtons = paymentGrid.querySelectorAll('button');
+                payButtons.forEach(b => {
+                    b.classList.remove('bg-coffee-900', 'text-white', 'border-coffee-900', 'shadow');
+                    b.classList.add('bg-white', 'text-coffee-800', 'border-coffee-200');
+                    
+                    let icon = b.querySelector('i');
+                    if (icon) {
+                        icon.classList.remove('text-white');
+                        icon.classList.add('text-sage-600');
+                    }
+                });
+
+                btn.classList.remove('bg-white', 'text-coffee-800', 'border-coffee-200');
+                btn.classList.add('bg-coffee-900', 'text-white', 'border-coffee-900', 'shadow');
+                
+                let activeIcon = btn.querySelector('i');
+                if (activeIcon) {
+                    activeIcon.classList.remove('text-sage-600');
+                    activeIcon.classList.add('text-white');
+                }
+            }
+        });
+    });
+    </script>
 </body>
 </html>
