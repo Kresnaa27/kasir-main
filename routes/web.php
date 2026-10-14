@@ -19,4 +19,5 @@ Route::middleware(['auth'])->group(function () {
     Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
     Route::get('/cashier', [CashierController::class, 'index'])->name('cashier.index');
     Route::post('/cashier/checkout', [CashierController::class, 'checkout'])->name('cashier.checkout');
+    Route::get('/cashier/history', [CashierController::class, 'getOrderHistory']);
 });

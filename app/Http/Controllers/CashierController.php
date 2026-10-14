@@ -14,8 +14,8 @@ class CashierController extends Controller
     public function index(Request $request)
     {
         $categories = Category::all();
-        $selectedCategory = $request->get('category');
-        $search = $request->get('search');
+        $selectedCategory = $request->input('category');
+        $search = $request->input('search');
 
         $products = Product::when($selectedCategory, function($query) use ($selectedCategory) {
             return $query->where('category_id', $selectedCategory);
@@ -27,7 +27,11 @@ class CashierController extends Controller
 
         return view('cashier.index', compact('categories', 'products', 'selectedCategory', 'search'));
     }
-
+     public function getOrderHistory()
+    {
+        $orders = Order::with('items')->latest()->take(20)->get();
+        return response()->json($orders);
+    }
     public function checkout(Request $request)
     {
         $request->validate([
@@ -40,14 +44,14 @@ class CashierController extends Controller
         try {
             $subtotal = collect($request->items)->sum(fn($item) => $item['price'] * $item['quantity']);
             $tax = $subtotal * 0.10;
-            $total = $subtotal + $tax;
+            $grandTotal = $subtotal + $tax; // Diubah dari $total ke $grandTotal
 
             $order = Order::create([
                 'order_number' => 'ORD-' . strtoupper(uniqid()),
                 'order_type' => $request->order_type,
                 'subtotal' => $subtotal,
                 'tax' => $tax,
-                'total' => $total,
+                'grand_total' => $grandTotal, // Sesuaikan dengan nama kolom database
                 'payment_method' => $request->payment_method,
                 'status' => 'Completed'
             ]);
@@ -55,7 +59,8 @@ class CashierController extends Controller
             foreach ($request->items as $item) {
                 OrderItem::create([
                     'order_id' => $order->id,
-                    'product_id' => $item['id'],
+                    'product_id' => $item['product_id'] ?? $item['id'], // Menangani kedua kemungkinan key
+                    'product_name' => $item['product_name'] ?? 'Produk', // Menyimpan nama produk jika ada kolomnya
                     'quantity' => $item['quantity'],
                     'price' => $item['price']
                 ]);
