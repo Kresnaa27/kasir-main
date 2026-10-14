@@ -12,7 +12,7 @@ return new class extends Migration {
     {
         Schema::create('categories', function (Blueprint $table) {
             $table->id();
-            $table->string('name'); // Coffee, Makanan, Minuman, Desserts
+            $table->string('name'); // Coffee, Drink, Food, Desserts
             $table->string('slug')->unique();
             $table->timestamps();
         });

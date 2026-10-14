@@ -11,26 +11,24 @@ use Illuminate\Support\Facades\DB;
 
 class CashierController extends Controller
 {
-    /**
-     * Menampilkan halaman kasir, kategori, dan produk.
-     */
     public function index(Request $request)
     {
         $categories = Category::all();
         $selectedCategory = $request->get('category');
+        $search = $request->get('search');
 
-        // Ambil produk berdasarkan kategori yang dipilih (jika ada)
+        // Ambil produk berdasarkan kategori dan kata kunci pencarian
         $products = Product::when($selectedCategory, function($query) use ($selectedCategory) {
             return $query->where('category_id', $selectedCategory);
-        })->get();
+        })
+        ->when($search, function($query) use ($search) {
+            return $query->where('name', 'like', '%' . $search . '%');
+        })
+        ->get();
 
-        // Sesuaikan nama view dengan lokasi file blade Anda (misal: resources/views/cashier/index.blade.php)
-        return view('cashier.index', compact('categories', 'products', 'selectedCategory'));
+        return view('cashier.index', compact('categories', 'products', 'selectedCategory', 'search'));
     }
 
-    /**
-     * Memproses transaksi/checkout yang dikirim dari keranjang kasir (AJAX).
-     */
     public function checkout(Request $request)
     {
         $request->validate([
@@ -45,7 +43,6 @@ class CashierController extends Controller
             $tax = $subtotal * 0.10; // Pajak 10%
             $total = $subtotal + $tax;
 
-            // Simpan data utama pesanan
             $order = Order::create([
                 'order_number' => 'ORD-' . strtoupper(uniqid()),
                 'order_type' => $request->order_type,
@@ -56,30 +53,21 @@ class CashierController extends Controller
                 'status' => 'Completed'
             ]);
 
-            // Simpan detail item yang dibeli
             foreach ($request->items as $item) {
                 OrderItem::create([
                     'order_id' => $order->id,
                     'product_id' => $item['id'],
                     'quantity' => $item['quantity'],
-                    'price' => $item['price'],
-                    'notes' => $item['notes'] ?? null
+                    'price' => $item['price']
                 ]);
             }
 
             DB::commit();
-            return response()->json([
-                'success' => true, 
-                'message' => 'Transaksi berhasil disimpan!', 
-                'order' => $order
-            ]);
+            return response()->json(['success' => true, 'message' => 'Transaksi berhasil!', 'order' => $order]);
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json([
-                'success' => false, 
-                'message' => 'Terjadi kesalahan: ' . $e->getMessage()
-            ], 500);
+            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
 }

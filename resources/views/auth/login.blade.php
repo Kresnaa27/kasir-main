@@ -111,16 +111,16 @@
                 </div>
             @endif
 
-            <h4 class="fw-bold mb-3 text-[#2C1A11]">Login</h4>
+            <h4 class="fw-bold mb-3">Login</h4>
 
-            <form action="{{ url('/login') }}" method="POST">
+            <form action="{{ route('login') }}" method="POST">
                 @csrf
                 
                 <div class="mb-3">
                     <label class="form-label text-secondary small fw-semibold">Email Address</label>
                     <div class="input-group">
                         <span class="input-group-text border-end-0"><i class="fas fa-envelope"></i></span>
-                        <input type="email" name="email" class="form-control border-start-0" placeholder="Masukkan email anda" value="{{ old('email') }}" required autofocus>
+                        <input type="email" name="email" class="form-control border-start-0" placeholder="kasir@gmail.com" value="{{ old('email') }}" required autofocus>
                     </div>
                 </div>
 
@@ -128,7 +128,7 @@
                     <label class="form-label text-secondary small fw-semibold">Password</label>
                     <div class="input-group">
                         <span class="input-group-text border-end-0"><i class="fas fa-lock"></i></span>
-                        <input type="password" name="password" class="form-control border-start-0" placeholder="Masukkan password anda" required>
+                        <input type="password" name="password" class="form-control border-start-0" placeholder="••••••••" required>
                     </div>
                 </div>
 
@@ -147,8 +147,8 @@
             </form>
 
             <div class="border-top pt-3 mt-3 text-center">
-                <small class="text-muted d-block fw-semibold mb-1">Catatan:</small>
-                <small class="text-secondary d-block">Gunakan email & password akun yang sudah terdaftar di database.</small>
+                <small class="text-muted d-block fw-semibold mb-1">Akun Demo:</small>
+                <small class="text-secondary d-block">Email: kasir@gmail.com / Password: password</small>
             </div>
         </div>
 
@@ -162,8 +162,8 @@
                         <i class="fas fa-mug-hot fa-3x"></i>
                     </div>
                 </div>
-                <h5 class="fw-bold text-[#4A2E1B]">Kelola Kafe Jadi Lebih Mudah</h5>
-                <p class="text-muted small px-4">Catat pesanan espresso, manual brew, hingga makanan dan dessert secara cepat dan terintegrasi.</p>
+                <h5 class="fw-bold" style="color: #4A2E1B;">Kelola Kafe Jadi Lebih Mudah</h5>
+                <p class="text-muted small px-4">Catat pesanan Coffee, Drink, Food, hingga Desserts secara cepat dan terintegrasi dengan database.</p>
             </div>
         </div>
     </div>
