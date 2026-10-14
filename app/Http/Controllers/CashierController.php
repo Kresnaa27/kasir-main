@@ -17,7 +17,6 @@ class CashierController extends Controller
         $selectedCategory = $request->get('category');
         $search = $request->get('search');
 
-        // Ambil produk berdasarkan kategori dan kata kunci pencarian
         $products = Product::when($selectedCategory, function($query) use ($selectedCategory) {
             return $query->where('category_id', $selectedCategory);
         })
@@ -40,7 +39,7 @@ class CashierController extends Controller
         DB::beginTransaction();
         try {
             $subtotal = collect($request->items)->sum(fn($item) => $item['price'] * $item['quantity']);
-            $tax = $subtotal * 0.10; // Pajak 10%
+            $tax = $subtotal * 0.10;
             $total = $subtotal + $tax;
 
             $order = Order::create([
@@ -63,11 +62,18 @@ class CashierController extends Controller
             }
 
             DB::commit();
-            return response()->json(['success' => true, 'message' => 'Transaksi berhasil!', 'order' => $order]);
+            return response()->json([
+                'success' => true, 
+                'message' => 'Transaksi berhasil!', 
+                'order' => $order
+            ]);
 
         } catch (\Exception $e) {
             DB::rollBack();
-            return response()->json(['success' => false, 'message' => $e->getMessage()], 500);
+            return response()->json([
+                'success' => false, 
+                'message' => $e->getMessage()
+            ], 500);
         }
     }
 }
