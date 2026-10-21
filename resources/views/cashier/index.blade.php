@@ -116,9 +116,9 @@
             <!-- CART HEADER -->
             <div class="p-4 border-b border-coffee-100 flex justify-between items-center bg-coffee-50">
                 <div>
-                    <h2 class="font-bold text-coffee-900">Pesanan Saat Ini</h2>
-                    <p class="text-xs text-gray-500">Order #1042</p>
-                </div>
+    <h2 class="font-bold text-coffee-900">Pesanan Saat Ini</h2>
+    <p id="currentOrderNumber" class="text-xs text-gray-500">Order #{{ $nextOrderNumber }}</p>
+</div>
                 <!-- Mode Pesanan -->
                 <div class="flex bg-coffee-200/50 p-1 rounded-xl text-xs font-semibold">
                     <button class="px-3 py-1.5 rounded-lg bg-coffee-800 text-white shadow-sm">Dine In</button>
@@ -307,7 +307,7 @@
             });
         }
 
-        // Fungsi Kirim Data Checkout ke Database
+        // Fungsi Kirim Data Checkout ke Database (Tunai)
         function processCheckout(orderType, paymentMethod) {
             let subtotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
             let tax = subtotal * 0.10;
@@ -340,6 +340,9 @@
                 alert(`Transaksi berhasil diproses dengan metode: ${paymentMethod}! Struk sedang dicetak.`);
                 cart = [];
                 updateCartUI();
+                
+                // Refresh halaman agar nomor order harian dan riwayat langsung sinkron dengan database
+                location.reload();
             })
             .catch(error => {
                 console.error('Error:', error);
@@ -390,7 +393,7 @@
                 }
             }
         });
-    });
+    }); // <-- Batas akhir DOMContentLoaded yang benar
 
     // Fungsi global di luar DOMContentLoaded agar bisa diakses elemen HTML
     window.closeQrisModal = function() {
@@ -421,6 +424,7 @@
             }))
         };
 
+        // Kirim data transaksi QRIS ke backend Laravel
         fetch('/cashier/checkout', {
             method: 'POST',
             headers: {
@@ -435,6 +439,14 @@
             closeQrisModal();
             cart = [];
             updateCartUI();
+
+            // Update nomor order otomatis bertambah
+            let orderNumEl = document.getElementById('currentOrderNumber');
+            if (orderNumEl) {
+                let currentText = orderNumEl.innerText;
+                let currentNum = parseInt(currentText.replace('Order #', '')) || 1;
+                orderNumEl.innerText = 'Order #' + (currentNum + 1);
+            }
         })
         .catch(error => {
             console.error('Error:', error);
