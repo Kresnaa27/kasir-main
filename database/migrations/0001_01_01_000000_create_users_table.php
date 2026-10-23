@@ -15,6 +15,7 @@ return new class extends Migration {
             $table->string('name');
             $table->string('email')->unique();
             $table->string('password');
+            $table->rememberToken();
             $table->string('qr_code')->nullable(); // QRIS unik per user
             $table->string('role')->default('cashier');
             $table->timestamps();

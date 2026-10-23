@@ -345,7 +345,7 @@ document.addEventListener("DOMContentLoaded", function() {
             return;
         }
     });
-    // Logika Real-time Search Produk
+    // Logika Real-time Search Produk (Hanya Berdasarkan Nama)
     const searchInput = document.querySelector('header input[type="text"]');
     if (searchInput) {
         searchInput.addEventListener('input', function(e) {
@@ -354,9 +354,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
             productCards.forEach(card => {
                 let productName = card.querySelector('h3').innerText.toLowerCase();
-                let productDesc = card.querySelector('p').innerText.toLowerCase();
 
-                if (productName.includes(keyword) || productDesc.includes(keyword)) {
+                // Hapus pemeriksaan productDesc agar deskripsi tidak ikut tercari
+                if (productName.includes(keyword)) {
                     card.style.display = 'flex';
                 } else {
                     card.style.display = 'none';

@@ -16,7 +16,7 @@ return new class extends Migration {
             $table->enum('order_type', ['Dine In', 'Takeaway'])->default('Dine In');
             $table->decimal('subtotal', 10, 2);
             $table->decimal('tax', 10, 2);
-            $table->decimal('total', 10, 2);
+            $table->integer('grand_total'); // Cukup integer saja tanpa auto_increment
             $table->string('payment_method')->nullable(); // Tunai, QRIS, Debit/Kredit
             $table->enum('status', ['Pending', 'Completed', 'Cancelled'])->default('Completed');
             $table->timestamps();

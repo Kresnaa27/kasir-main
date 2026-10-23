@@ -14,6 +14,7 @@ return new class extends Migration {
             $table->id();
             $table->foreignId('order_id')->constrained('orders')->onDelete('cascade');
             $table->foreignId('product_id')->constrained('products');
+            $table->string('product_name', 255);
             $table->integer('quantity');
             $table->decimal('price', 10, 2);
             $table->string('notes')->nullable(); // Catatan opsional (misal: Less Sugar)
