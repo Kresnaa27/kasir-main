@@ -42,7 +42,9 @@
                 <h1 class="text-xl font-bold tracking-widest text-white" style="font-family: 'Playfair Display', serif;">
                     SENJA <span class="text-xs font-medium italic tracking-normal text-amber-200">Coffee</span>
                 </h1>
-                <p class="text-xs text-coffee-200">Shift Pagi • Barista: Alex</p>
+                <p class="text-xs text-coffee-200">
+    Shift {{ Auth::user()->shift ?? 'Pagi' }} • Barista: <span class="font-semibold text-white">{{ Auth::user()->name }}</span>
+</p>
             </div>
         </div>
 
@@ -56,9 +58,19 @@
             <button onclick="openHistoryModal()" class="bg-sage-600 hover:bg-sage-700 text-white text-sm px-4 py-2 rounded-lg font-medium transition flex items-center gap-2 shadow-sm">
                <i class="fa-solid fa-clock-rotate-left"></i> Riwayat Pesanan
             </button>
-            <button class="bg-coffee-900 hover:bg-coffee-900/80 text-white text-sm px-3 py-2 rounded-lg border border-coffee-600">
-                <i class="fa-solid fa-user-gear"></i>
-            </button>
+            <form method="POST" action="{{ route('logout') }}" class="inline">
+    @csrf
+    <button type="submit" 
+            title="Keluar / Ganti Shift"
+            class="p-2.5 rounded-xl bg-coffee-800 text-coffee-200 hover:text-white hover:bg-coffee-700 transition duration-150 flex items-center gap-2 text-xs font-medium border border-coffee-700">
+        <i class="fa-solid fa-right-from-bracket">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+            </svg>
+        </i>
+        <span class="hidden sm:inline">Ganti Shift</span>
+    </button>
+</form>
         </div>
     </header>
 

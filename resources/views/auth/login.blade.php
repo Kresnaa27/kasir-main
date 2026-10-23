@@ -8,6 +8,9 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- FontAwesome Icon -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
     <style>
         body {
             background-color: #FDFBF7;
@@ -100,10 +103,15 @@
     <div class="login-container">
         <!-- Bagian Kiri: Form Login -->
         <div class="form-section">
-            <div class="mb-4">
-                <h2 class="brand-title">Bean & Brew Pos</h2>
-                <p class="brand-subtitle">Coffee Shop Management System</p>
-            </div>
+            <!-- Header Judul Brand SENJA Coffee -->
+            <div class="mb-6">
+             <h1 class="text-3xl font-bold tracking-widest text-coffee-900" style="font-family: 'Playfair Display', serif;">
+            SENJA <span class="text-base font-medium italic tracking-normal text-coffee-600">Coffee</span>
+           </h1>
+           <p class="text-sm text-coffee-600 italic mt-1">
+           Nikmati kopi mu di hari senja
+          </p>
+         </div>
 
             @if($errors->any())
                 <div class="alert alert-danger py-2 small rounded-3 mb-3">
@@ -153,20 +161,17 @@
         </div>
 
         <!-- Bagian Kanan: Ilustrasi Coffee Shop -->
-        <div class="illustration-section">
-            <div style="position: absolute; width: 260px; height: 260px; background: rgba(107, 142, 120, 0.1); border-radius: 50%; z-index: 0; right: 20px; top: 30px;"></div>
-            
-            <div class="text-center z-1 position-relative">
-                <div class="mb-4">
-                    <div class="d-inline-flex align-items-center justify-content-center text-white rounded-circle shadow-lg" style="width: 110px; height: 110px; background-color: #6B8E78;">
-                        <i class="fas fa-mug-hot fa-3x"></i>
-                    </div>
-                </div>
-                <h5 class="fw-bold" style="color: #4A2E1B;">Kelola Kafe Jadi Lebih Mudah</h5>
-                <p class="text-muted small px-4">Catat pesanan Coffee, Drink, Food, hingga Desserts secara cepat dan terintegrasi dengan database.</p>
-            </div>
-        </div>
+<div class="illustration-section text-center">
+    <div class="mb-4 d-inline-block">
+        <img src="{{ asset('images/Senja.png') }}" 
+             alt="SENJA Coffee Logo" 
+             class="rounded-circle shadow-sm" 
+             style="width: 220px; height: 220px; object-fit: cover;">
     </div>
+    
+    <h5 class="fw-bold" style="color: #4A2E1B;">Kelola Kafe Jadi Lebih Mudah</h5>
+    <p class="text-muted small px-4">Catat pesanan Coffee, Drink, Food, hingga Desserts secara cepat dan terintegrasi dengan database.</p>
+</div>
 
     <!-- Bootstrap JS Bundle CDN -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
