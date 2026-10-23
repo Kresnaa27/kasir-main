@@ -26,6 +26,9 @@
         }
     </script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&display=swap" rel="stylesheet">
 </head>
 <body class="bg-coffee-50 font-sans antialiased text-coffee-900 h-screen flex flex-col overflow-hidden">
 
@@ -36,7 +39,9 @@
                 <i class="fa-solid font-bold fa-mug-hot text-xl text-white"></i>
             </div>
             <div>
-                <h1 class="font-bold text-lg leading-tight">Morning Breeze Coffe</h1>
+                <h1 class="text-xl font-bold tracking-widest text-white" style="font-family: 'Playfair Display', serif;">
+                    SENJA <span class="text-xs font-medium italic tracking-normal text-amber-200">Coffee</span>
+                </h1>
                 <p class="text-xs text-coffee-200">Shift Pagi • Barista: Alex</p>
             </div>
         </div>
