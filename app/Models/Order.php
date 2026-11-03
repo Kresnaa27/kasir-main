@@ -16,7 +16,8 @@ class Order extends Model
         'tax', 
         'grand_total', // <-- Diperbaiki dari 'total' menjadi 'grand_total'
         'payment_method', 
-        'status'
+        'status',
+        'shift'
     ];
 
     public function items()

@@ -227,7 +227,7 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     };
 
-    // Modal Riwayat Pesanan
+    // --- MODAL RIWAYAT PESANAN (Dengan Pembatas Shift) ---
     window.openHistoryModal = function() {
         const modal = document.getElementById('historyModal');
         const container = document.getElementById('historyListContainer');
@@ -255,7 +255,33 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
 
                 container.innerHTML = '';
+                let lastShift = null; // Variabel pelacak perubahan shift
+
                 data.forEach(order => {
+                    let currentShift = order.shift || 'Pagi';
+
+                    // JIKA ADA PERUBAHAN SHIFT, MUNCULKAN PEMBATAS / HEADER SECTION
+                    if (currentShift !== lastShift) {
+                        let shiftBadgeStyle = 'bg-amber-50 text-amber-800 border-amber-200';
+                        if (currentShift === 'Siang') shiftBadgeStyle = 'bg-blue-50 text-blue-800 border-blue-200';
+                        else if (currentShift === 'Malam') shiftBadgeStyle = 'bg-purple-50 text-purple-800 border-purple-200';
+
+                        container.innerHTML += `
+                            <div class="flex items-center gap-3 my-4 first:mt-1">
+                                <div class="flex-1 h-px bg-coffee-200"></div>
+                                <span class="text-xs font-bold px-3.5 py-1 rounded-full border ${shiftBadgeStyle} shadow-sm flex items-center gap-1.5">
+                                    <i class="fa-solid fa-business-time"></i> Shift ${currentShift}
+                                </span>
+                                <div class="flex-1 h-px bg-coffee-200"></div>
+                            </div>
+                        `;
+                        lastShift = currentShift;
+                    }
+
+                    let shiftBadgeColor = 'bg-amber-100 text-amber-800';
+                    if (currentShift === 'Siang') shiftBadgeColor = 'bg-blue-100 text-blue-800';
+                    else if (currentShift === 'Malam') shiftBadgeColor = 'bg-purple-100 text-purple-800';
+
                     let itemsHtml = order.items.map(item => `
                         <div class="flex justify-between text-xs text-gray-600 py-0.5">
                             <span>• ${item.product_name} <span class="font-semibold text-coffee-900">(x${item.quantity})</span></span>
@@ -270,6 +296,9 @@ document.addEventListener("DOMContentLoaded", function() {
                                     <span class="font-bold text-sm text-coffee-900">${order.order_number}</span>
                                     <span class="text-[10px] px-2 py-0.5 rounded-full font-semibold ${order.order_type === 'Dine In' ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}">
                                         ${order.order_type}
+                                    </span>
+                                    <span class="text-[10px] px-2 py-0.5 rounded-full font-bold ${shiftBadgeColor}">
+                                        Shift ${currentShift}
                                     </span>
                                 </div>
                                 <span class="text-xs font-semibold text-sage-700 bg-white px-2 py-1 rounded-md border border-coffee-200">
@@ -289,9 +318,7 @@ document.addEventListener("DOMContentLoaded", function() {
             })
             .catch(error => {
                 console.error('Error:', error);
-                container.innerHTML = `
-                    <div class="text-red-400 text-center py-10 text-xs">Gagal memuat riwayat.</div>
-                `;
+                container.innerHTML = `<div class="text-red-400 text-center py-10 text-xs">Gagal memuat riwayat.</div>`;
             });
     };
 
@@ -299,6 +326,7 @@ document.addEventListener("DOMContentLoaded", function() {
         document.getElementById('historyModal').classList.remove('flex');
         document.getElementById('historyModal').classList.add('hidden');
     };
+
     // Logika Toggle Metode Pembayaran (Tunai & QRIS)
     const paymentGrid = document.querySelector('.grid.grid-cols-2');
     if (paymentGrid) {
@@ -328,6 +356,7 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         });
     }
+
     // Logika Toggle Mode Pesanan (Dine In / Takeaway)
     document.addEventListener("click", function(e) {
         let btn = e.target.closest('button');
@@ -345,6 +374,7 @@ document.addEventListener("DOMContentLoaded", function() {
             return;
         }
     });
+
     // Logika Real-time Search Produk (Hanya Berdasarkan Nama)
     const searchInput = document.querySelector('header input[type="text"]');
     if (searchInput) {
@@ -355,7 +385,6 @@ document.addEventListener("DOMContentLoaded", function() {
             productCards.forEach(card => {
                 let productName = card.querySelector('h3').innerText.toLowerCase();
 
-                // Hapus pemeriksaan productDesc agar deskripsi tidak ikut tercari
                 if (productName.includes(keyword)) {
                     card.style.display = 'flex';
                 } else {
@@ -364,6 +393,7 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         });
     }
+
     // Logika Filter Produk Berdasarkan Kategori
     const categoryContainer = document.getElementById('categoryContainer');
     if (categoryContainer) {
@@ -392,4 +422,38 @@ document.addEventListener("DOMContentLoaded", function() {
             });
         });
     }
+
+    // --- FITUR ALERT 30 MENIT SEBELUM SHIFT BERAKHIR ---
+    function checkShiftAlert() {
+        const now = new Date();
+        const hours = now.getHours();
+        const minutes = now.getMinutes();
+        const totalMins = hours * 60 + minutes;
+
+        let shiftName = '';
+        let targetMins = 0;
+
+        if (hours === 11 && minutes >= 30) {
+            shiftName = 'Pagi';
+            targetMins = 720;
+        } else if (hours === 16 && minutes >= 30) {
+            shiftName = 'Siang';
+            targetMins = 1020;
+        } else if (hours === 21 && minutes >= 30) {
+            shiftName = 'Malam';
+            targetMins = 1320;
+        }
+
+        if (shiftName) {
+            let remainingMins = targetMins - totalMins;
+            let alertKey = `shift_alert_${now.toDateString()}_${shiftName}`;
+            
+            if (!localStorage.getItem(alertKey) && remainingMins <= 30) {
+                alert(`PERINGATAN: Shift ${shiftName} akan berakhir dalam ${remainingMins} menit lagi!`);
+                localStorage.setItem(alertKey, 'true');
+            }
+        }
+    }
+    // Cek setiap 30 detik
+    setInterval(checkShiftAlert, 30000);
 });

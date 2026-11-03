@@ -53,6 +53,16 @@ class CashierController extends Controller
             $tax = $subtotal * 0.10;
             $grandTotal = $subtotal + $tax;
 
+            // Deteksi Shift Berdasarkan Jam Saat Ini
+            $currentHour = 13;
+            if ($currentHour >= 7 && $currentHour < 12) {
+                $activeShift = 'Pagi';
+            } elseif ($currentHour >= 12 && $currentHour < 17) {
+                $activeShift = 'Siang';
+            } else {
+                $activeShift = 'Malam';
+            }
+
             // Generate nomor order harian (Contoh: ORD-001, ORD-002, dst.)
             $todayCount = Order::whereDate('created_at', Carbon::today())->count();
             $orderNumber = 'ORD-' . str_pad($todayCount + 1, 3, '0', STR_PAD_LEFT);
@@ -64,7 +74,8 @@ class CashierController extends Controller
                 'tax' => $tax,
                 'grand_total' => $grandTotal,
                 'payment_method' => $request->payment_method,
-                'status' => 'Completed'
+                'status' => 'Completed',
+                'shift' => $activeShift
             ]);
 
             foreach ($request->items as $item) {

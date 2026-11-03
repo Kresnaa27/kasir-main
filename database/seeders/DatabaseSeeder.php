@@ -15,7 +15,7 @@ class DatabaseSeeder extends Seeder
         // 1. Buat User Kasir dengan QR Code Unik[cite: 10]
         User::create([
             'name' => 'Alex (Barista)',
-            'email' => 'kasir@gmail.com',
+            'username' => 'alexbarista',
             'password' => Hash::make('password'),
             'qr_code' => 'QRIS-MERCHANT-BARISTA-ALEX-001',
             'role' => 'cashier',

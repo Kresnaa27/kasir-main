@@ -19,6 +19,7 @@ return new class extends Migration {
             $table->integer('grand_total'); // Cukup integer saja tanpa auto_increment
             $table->string('payment_method')->nullable(); // Tunai, QRIS, Debit/Kredit
             $table->enum('status', ['Pending', 'Completed', 'Cancelled'])->default('Completed');
+            $table->string('shift')->default('Pagi');
             $table->timestamps();
         });
     }

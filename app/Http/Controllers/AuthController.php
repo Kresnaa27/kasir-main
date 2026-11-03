@@ -18,7 +18,7 @@ class AuthController extends Controller
     {
         // 1. Validasi input
         $credentials = $request->validate([
-            'email' => ['required', 'email'],
+            'username' => ['required'],
             'password' => ['required'],
         ]);
 
@@ -32,8 +32,8 @@ class AuthController extends Controller
 
         // 3. Jika gagal, kembalikan ke halaman login dengan pesan error
         return back()->withErrors([
-            'email' => 'Email atau password yang Anda masukkan salah.',
-        ])->onlyInput('email');
+            'username' => 'Username atau password yang Anda masukkan salah.',
+        ])->onlyInput('username');
     }
 
     // Proses Logout

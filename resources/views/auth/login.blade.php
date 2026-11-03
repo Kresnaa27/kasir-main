@@ -125,10 +125,10 @@
                 @csrf
                 
                 <div class="mb-3">
-                    <label class="form-label text-secondary small fw-semibold">Email Address</label>
+                    <label class="form-label text-secondary small fw-semibold">Username</label>
                     <div class="input-group">
-                        <span class="input-group-text border-end-0"><i class="fas fa-envelope"></i></span>
-                        <input type="email" name="email" class="form-control border-start-0" placeholder="Masukkan Email anda" value="{{ old('email') }}" required autofocus>
+                        <span class="input-group-text border-end-0"><i class="fas fa-user"></i></span>
+                        <input type="text" name="username" class="form-control border-start-0" placeholder="Masukkan Username anda" value="{{ old('username') }}" required autofocus>
                     </div>
                 </div>
 
@@ -156,7 +156,7 @@
 
             <div class="border-top pt-3 mt-3 text-center">
                 <small class="text-muted d-block fw-semibold mb-1">Akun Demo:</small>
-                <small class="text-secondary d-block">Email: kasir@gmail.com / Password: password</small>
+                <small class="text-secondary d-block">Username: alexbarista / Password: password</small>
             </div>
         </div>
 
