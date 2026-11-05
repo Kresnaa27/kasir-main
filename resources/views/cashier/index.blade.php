@@ -42,10 +42,10 @@
                 <i class="fa-solid font-bold fa-mug-hot text-xl text-white"></i>
             </div>
             <div>
-                <h1 class="text-xl font-bold tracking-widest text-white"
-                    style="font-family: 'Playfair Display', serif;">
-                    SENJA <span class="text-xs font-medium italic tracking-normal text-amber-200">Coffee</span>
-                </h1>
+                <h1 class="text-xl font-bold tracking-widest text-white flex items-baseline gap-2" style="font-family: 'Playfair Display', serif;">
+    <span>SENJA</span>
+    <span class="text-base font-medium italic tracking-normal text-amber-200">Cafe</span>
+</h1>
                 <p class="text-xs text-coffee-200">
                     Shift
                     <span id="liveShiftIndicator">

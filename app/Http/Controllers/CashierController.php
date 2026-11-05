@@ -54,7 +54,7 @@ class CashierController extends Controller
             $grandTotal = $subtotal + $tax;
 
             // Deteksi Shift Berdasarkan Jam Saat Ini
-            $currentHour = 13;
+            $currentHour = Carbon::now()->hour;
             if ($currentHour >= 7 && $currentHour < 12) {
                 $activeShift = 'Pagi';
             } elseif ($currentHour >= 12 && $currentHour < 17) {
