@@ -15,7 +15,6 @@ return new class extends Migration {
 
             $table->string('name');
             $table->decimal('price', 12, 2);
-            $table->integer('stock')->default(0);
             $table->text('description')->nullable();
             $table->boolean('is_best_seller')->default(false);
             $table->timestamps();

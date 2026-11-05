@@ -12,7 +12,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <script>
-        // Oper data produk dari PHP ke JavaScript global agar bisa dibaca app.js
+        // Oper data produk dari PHP ke JavaScript global agar bisa dibaca app.js[cite: 22]
         window.appProducts = @json($products);
 
         tailwind.config = {
@@ -43,9 +43,9 @@
             </div>
             <div>
                 <h1 class="text-xl font-bold tracking-widest text-white flex items-baseline gap-2" style="font-family: 'Playfair Display', serif;">
-    <span>SENJA</span>
-    <span class="text-base font-medium italic tracking-normal text-amber-200">Cafe</span>
-</h1>
+                    <span>SENJA</span>
+                    <span class="text-base font-medium italic tracking-normal text-amber-200">Cafe</span>
+                </h1>
                 <p class="text-xs text-coffee-200">
                     Shift
                     <span id="liveShiftIndicator">
@@ -90,45 +90,124 @@
     <div class="flex-1 flex overflow-hidden">
         <!-- LEFT SIDE: MENU & KATEGORI -->
         <div class="w-2/3 flex flex-col p-4 border-r border-coffee-200/60 overflow-hidden">
+            <!-- KATEGORI (Tombol Semua Menu Dihilangkan) -->
             <div id="categoryContainer" class="flex gap-2 overflow-x-auto pb-3 mb-2 scrollbar-none">
-                <button data-category-id="all"
-                    class="px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap bg-coffee-800 text-white shadow-sm transition">
-                    ☕ Semua Menu
-                </button>
-                @foreach($categories as $category)
+                @foreach($categories as $index => $category)
                     <button data-category-id="{{ $category->id }}"
-                        class="px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap bg-white text-coffee-800 border border-coffee-200 hover:bg-coffee-100 transition">
+                        class="px-5 py-2.5 rounded-full text-sm font-semibold whitespace-nowrap {{ $index === 0 ? 'bg-coffee-800 text-white shadow-sm' : 'bg-white text-coffee-800 border border-coffee-200 hover:bg-coffee-100' }} transition">
                         {{ $category->name }}
                     </button>
                 @endforeach
             </div>
 
-            <div class="flex-1 overflow-y-auto pr-1 grid grid-cols-3 gap-4 auto-rows-max">
-                @foreach($products as $product)
-                    <div class="product-card bg-white p-3 rounded-2xl shadow-sm border border-coffee-100 hover:shadow-md hover:border-sage-500 transition cursor-pointer flex flex-col justify-between group"
-                        data-category="{{ $product->category_id }}">
-                        <div>
-                            <div
-                                class="h-28 bg-coffee-100 rounded-xl mb-3 flex items-center justify-center overflow-hidden relative">
-                                <i class="fa-solid fa-mug-saucer text-4xl text-coffee-600"></i>
-                                @if($product->is_best_seller ?? false)
-                                    <span
-                                        class="absolute top-2 right-2 bg-sage-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Best
-                                        Seller</span>
-                                @endif
+            <!-- CONTAINER DAFTAR MENU BERDASARKAN SECTION KATEGORI -->
+            <div class="flex-1 overflow-y-auto pr-1 space-y-6">
+                @php
+                    $groupedProducts = $products->groupBy('category_id');
+                @endphp
+
+                @foreach($categories as $category)
+                    @php
+                        $catProducts = $groupedProducts->get($category->id, collect());
+                        if($catProducts->isEmpty()) continue;
+                    @endphp
+
+                    <div class="category-section" data-category-section="{{ $category->id }}">
+                        @if($category->slug === 'pastry-desserts')
+                            {{-- PEMBAGIAN KHUSUS UNTUK PASTRY & DESSERTS --}}
+                            
+                            {{-- 1. Bagian Pastry --}}
+                            @php
+                                $pastrys = $catProducts->filter(function($p) {
+                                    return stripos($p->name, 'Cake') === false && stripos($p->name, 'Brownies') === false;
+                                });
+                            @endphp
+                            @if($pastrys->isNotEmpty())
+                                <div class="text-xs font-bold text-sage-700 uppercase tracking-wider mb-2 mt-1 border-l-2 border-sage-500 pl-2">Pastry</div>
+                                <div class="grid grid-cols-3 gap-4 mb-4">
+                                    @foreach($pastrys as $product)
+                                        <div class="product-card bg-white p-3 rounded-2xl shadow-sm border border-coffee-100 hover:shadow-md hover:border-sage-500 transition cursor-pointer flex flex-col justify-between group" data-category="{{ $product->category_id }}">
+                                            <div>
+                                                <div class="h-28 bg-coffee-100 rounded-xl mb-3 flex items-center justify-center overflow-hidden relative">
+                                                    <i class="fa-solid fa-mug-saucer text-4xl text-coffee-600"></i>
+                                                    @if($product->is_best_seller ?? false)
+                                                        <span class="absolute top-2 right-2 bg-sage-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Best Seller</span>
+                                                    @endif
+                                                </div>
+                                                <h3 class="font-bold text-coffee-900 group-hover:text-sage-700 transition">{{ $product->name }}</h3>
+                                                <p class="text-xs text-gray-500">{{ $product->description ?? 'Freshly brewed' }}</p>
+                                                {{-- Informasi Stok Dihilangkan --}}
+                                            </div>
+                                            <div class="flex justify-between items-center mt-3 pt-2 border-t border-gray-100">
+                                                <span class="font-bold text-coffee-800">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                                                <button onclick="addToCart({{ $product->id }})" class="w-8 h-8 rounded-full bg-sage-100 text-sage-700 flex items-center justify-center font-bold hover:bg-sage-600 hover:text-white transition">
+                                                    <i class="fa-solid fa-plus text-xs"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+
+                            {{-- 2. Bagian Desserts --}}
+                            @php
+                                $desserts = $catProducts->filter(function($p) {
+                                    return stripos($p->name, 'Cake') !== false || stripos($p->name, 'Brownies') !== false;
+                                });
+                            @endphp
+                            @if($desserts->isNotEmpty())
+                                <div class="text-xs font-bold text-amber-700 uppercase tracking-wider mb-2 mt-4 border-l-2 border-amber-500 pl-2">Desserts & Cakes</div>
+                                <div class="grid grid-cols-3 gap-4 mb-4">
+                                    @foreach($desserts as $product)
+                                        <div class="product-card bg-white p-3 rounded-2xl shadow-sm border border-coffee-100 hover:shadow-md hover:border-sage-500 transition cursor-pointer flex flex-col justify-between group" data-category="{{ $product->category_id }}">
+                                            <div>
+                                                <div class="h-28 bg-coffee-100 rounded-xl mb-3 flex items-center justify-center overflow-hidden relative">
+                                                    <i class="fa-solid fa-mug-saucer text-4xl text-coffee-600"></i>
+                                                    @if($product->is_best_seller ?? false)
+                                                        <span class="absolute top-2 right-2 bg-sage-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Best Seller</span>
+                                                    @endif
+                                                </div>
+                                                <h3 class="font-bold text-coffee-900 group-hover:text-sage-700 transition">{{ $product->name }}</h3>
+                                                <p class="text-xs text-gray-500">{{ $product->description ?? 'Freshly brewed' }}</p>
+                                                {{-- Informasi Stok Dihilangkan --}}
+                                            </div>
+                                            <div class="flex justify-between items-center mt-3 pt-2 border-t border-gray-100">
+                                                <span class="font-bold text-coffee-800">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                                                <button onclick="addToCart({{ $product->id }})" class="w-8 h-8 rounded-full bg-sage-100 text-sage-700 flex items-center justify-center font-bold hover:bg-sage-600 hover:text-white transition">
+                                                    <i class="fa-solid fa-plus text-xs"></i>
+                                                </button>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                </div>
+                            @endif
+
+                        @else
+                            {{-- KATEGORI UMUM (Coffee, Non-Coffee, Food) --}}
+                            <div class="grid grid-cols-3 gap-4">
+                                @foreach($catProducts as $product)
+                                    <div class="product-card bg-white p-3 rounded-2xl shadow-sm border border-coffee-100 hover:shadow-md hover:border-sage-500 transition cursor-pointer flex flex-col justify-between group" data-category="{{ $product->category_id }}">
+                                        <div>
+                                            <div class="h-28 bg-coffee-100 rounded-xl mb-3 flex items-center justify-center overflow-hidden relative">
+                                                <i class="fa-solid fa-mug-saucer text-4xl text-coffee-600"></i>
+                                                @if($product->is_best_seller ?? false)
+                                                    <span class="absolute top-2 right-2 bg-sage-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full">Best Seller</span>
+                                                @endif
+                                            </div>
+                                            <h3 class="font-bold text-coffee-900 group-hover:text-sage-700 transition">{{ $product->name }}</h3>
+                                            <p class="text-xs text-gray-500">{{ $product->description ?? 'Freshly brewed' }}</p>
+                                            {{-- Informasi Stok Dihilangkan --}}
+                                        </div>
+                                        <div class="flex justify-between items-center mt-3 pt-2 border-t border-gray-100">
+                                            <span class="font-bold text-coffee-800">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                                            <button onclick="addToCart({{ $product->id }})" class="w-8 h-8 rounded-full bg-sage-100 text-sage-700 flex items-center justify-center font-bold hover:bg-sage-600 hover:text-white transition">
+                                                <i class="fa-solid fa-plus text-xs"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                @endforeach
                             </div>
-                            <h3 class="font-bold text-coffee-900 group-hover:text-sage-700 transition">{{ $product->name }}
-                            </h3>
-                            <p class="text-xs text-gray-500">{{ $product->description ?? 'Freshly brewed' }}</p>
-                        </div>
-                        <div class="flex justify-between items-center mt-3 pt-2 border-t border-gray-100">
-                            <span class="font-bold text-coffee-800">Rp
-                                {{ number_format($product->price, 0, ',', '.') }}</span>
-                            <button onclick="addToCart({{ $product->id }})"
-                                class="w-8 h-8 rounded-full bg-sage-100 text-sage-700 flex items-center justify-center font-bold hover:bg-sage-600 hover:text-white transition">
-                                <i class="fa-solid fa-plus text-xs"></i>
-                            </button>
-                        </div>
+                        @endif
                     </div>
                 @endforeach
             </div>
@@ -171,18 +250,15 @@
                 </div>
 
                 <div class="grid grid-cols-2 gap-2 pt-1">
-                    <button
-                        class="py-2 border border-coffee-200 rounded-lg bg-white text-xs font-bold text-coffee-800 flex flex-col items-center gap-1 hover:border-sage-500 transition">
+                    <button class="py-2 border border-coffee-200 rounded-lg bg-white text-xs font-bold text-coffee-800 flex flex-col items-center gap-1 hover:border-sage-500 transition">
                         <i class="fa-solid fa-money-bill-wave text-sage-600 text-sm"></i> Tunai
                     </button>
-                    <button id="btnQris"
-                        class="py-2 border border-coffee-200 rounded-lg bg-white text-xs font-bold text-coffee-800 flex flex-col items-center gap-1 hover:border-sage-500 transition">
+                    <button id="btnQris" class="py-2 border border-coffee-200 rounded-lg bg-white text-xs font-bold text-coffee-800 flex flex-col items-center gap-1 hover:border-sage-500 transition">
                         <i class="fa-solid fa-qrcode text-sage-600 text-sm"></i> QRIS
                     </button>
                 </div>
 
-                <button
-                    class="w-full bg-sage-600 hover:bg-sage-700 text-white font-bold py-3.5 rounded-xl text-sm transition shadow-md flex items-center justify-center gap-2">
+                <button class="w-full bg-sage-600 hover:bg-sage-700 text-white font-bold py-3.5 rounded-xl text-sm transition shadow-md flex items-center justify-center gap-2">
                     <i class="fa-solid fa-print"></i> Proses & Cetak Struk
                 </button>
             </div>
@@ -194,23 +270,18 @@
         <div class="bg-white p-6 rounded-2xl shadow-xl w-96 text-center space-y-4">
             <div class="flex justify-between items-center border-b pb-2">
                 <h3 class="font-bold text-coffee-900 text-base">Scan QRIS Pembayaran</h3>
-                <button onclick="closeQrisModal()"
-                    class="text-gray-400 hover:text-gray-600 font-bold text-lg">&times;</button>
+                <button onclick="closeQrisModal()" class="text-gray-400 hover:text-gray-600 font-bold text-lg">&times;</button>
             </div>
             <p class="text-xs text-gray-500">Silakan scan menggunakan aplikasi pembayaran Anda.</p>
             <div class="bg-slate-900 p-4 rounded-xl flex justify-center shadow-md">
-                <img src="{{ asset('images/qris-sample.png') }}" alt="QRIS Code"
-                    class="w-48 h-48 object-contain rounded-lg">
+                <img src="{{ asset('images/qris-sample.png') }}" alt="QRIS Code" class="w-48 h-48 object-contain rounded-lg">
             </div>
             <div class="text-sm font-bold text-coffee-900">
                 Total Tagihan: <span id="modalTotalAmount" class="text-coffee-800 text-base">Rp 0</span>
             </div>
             <div class="flex gap-2 pt-2">
-                <button onclick="closeQrisModal()"
-                    class="flex-1 bg-gray-200 hover:bg-gray-300 text-coffee-900 text-xs font-bold py-2.5 rounded-xl transition">Batal</button>
-                <button onclick="finishPayment()"
-                    class="flex-1 bg-sage-600 hover:bg-sage-700 text-white text-xs font-bold py-2.5 rounded-xl transition">Selesai
-                    & Cetak</button>
+                <button onclick="closeQrisModal()" class="flex-1 bg-gray-200 hover:bg-gray-300 text-coffee-900 text-xs font-bold py-2.5 rounded-xl transition">Batal</button>
+                <button onclick="finishPayment()" class="flex-1 bg-sage-600 hover:bg-sage-700 text-white text-xs font-bold py-2.5 rounded-xl transition">Selesai & Cetak</button>
             </div>
         </div>
     </div>
@@ -220,12 +291,10 @@
         <div class="bg-white p-6 rounded-2xl shadow-xl w-[600px] max-h-[85vh] flex flex-col space-y-4">
             <div class="flex justify-between items-center border-b pb-3">
                 <div class="flex items-center gap-2">
-                    <div class="bg-sage-100 p-2 rounded-lg text-sage-700"><i class="fa-solid fa-clock-rotate-left"></i>
-                    </div>
+                    <div class="bg-sage-100 p-2 rounded-lg text-sage-700"><i class="fa-solid fa-clock-rotate-left"></i></div>
                     <h3 class="font-bold text-coffee-900 text-lg">Riwayat Transaksi Terakhir</h3>
                 </div>
-                <button onclick="closeHistoryModal()"
-                    class="text-gray-400 hover:text-gray-600 font-bold text-xl">&times;</button>
+                <button onclick="closeHistoryModal()" class="text-gray-400 hover:text-gray-600 font-bold text-xl">&times;</button>
             </div>
             <div id="historyListContainer" class="overflow-y-auto flex-1 space-y-3 pr-1">
                 <div class="text-center text-gray-400 py-10 text-xs">
@@ -234,8 +303,7 @@
                 </div>
             </div>
             <div class="pt-2 border-t">
-                <button onclick="closeHistoryModal()"
-                    class="w-full bg-coffee-800 hover:bg-coffee-900 text-white text-xs font-bold py-3 rounded-xl transition">Tutup</button>
+                <button onclick="closeHistoryModal()" class="w-full bg-coffee-800 hover:bg-coffee-900 text-white text-xs font-bold py-3 rounded-xl transition">Tutup</button>
             </div>
         </div>
     </div>

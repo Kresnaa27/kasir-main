@@ -255,12 +255,11 @@ document.addEventListener("DOMContentLoaded", function() {
                 }
 
                 container.innerHTML = '';
-                let lastShift = null; // Variabel pelacak perubahan shift
+                let lastShift = null;
 
                 data.forEach(order => {
                     let currentShift = order.shift || 'Pagi';
 
-                    // JIKA ADA PERUBAHAN SHIFT, MUNCULKAN PEMBATAS / HEADER SECTION
                     if (currentShift !== lastShift) {
                         let shiftBadgeStyle = 'bg-amber-50 text-amber-800 border-amber-200';
                         if (currentShift === 'Siang') shiftBadgeStyle = 'bg-blue-50 text-blue-800 border-blue-200';
@@ -394,14 +393,28 @@ document.addEventListener("DOMContentLoaded", function() {
         });
     }
 
-    // Logika Filter Produk Berdasarkan Kategori
+    // Logika Filter Berdasarkan Kategori Section (Tanpa Tombol Semua Menu)
     const categoryContainer = document.getElementById('categoryContainer');
     if (categoryContainer) {
+        const catButtons = categoryContainer.querySelectorAll('button');
+        const sections = document.querySelectorAll('.category-section');
+
+        // Default tampilkan kategori pertama saat load
+        if (catButtons.length > 0) {
+            let firstCatId = catButtons[0].getAttribute('data-category-id');
+            sections.forEach(sec => {
+                if (sec.getAttribute('data-category-section') === firstCatId) {
+                    sec.style.display = 'block';
+                } else {
+                    sec.style.display = 'none';
+                }
+            });
+        }
+
         categoryContainer.addEventListener('click', function(e) {
             let catBtn = e.target.closest('button');
             if (!catBtn) return;
 
-            let catButtons = categoryContainer.querySelectorAll('button');
             catButtons.forEach(b => {
                 b.classList.remove('bg-coffee-800', 'text-white', 'shadow-sm');
                 b.classList.add('bg-white', 'text-coffee-800', 'border', 'border-coffee-200', 'hover:bg-coffee-100');
@@ -410,14 +423,13 @@ document.addEventListener("DOMContentLoaded", function() {
             catBtn.classList.add('bg-coffee-800', 'text-white', 'shadow-sm');
 
             let selectedCatId = catBtn.getAttribute('data-category-id');
-            let productCards = document.querySelectorAll('.product-card');
 
-            productCards.forEach(card => {
-                let cardCatId = card.getAttribute('data-category');
-                if (selectedCatId === 'all' || cardCatId === selectedCatId) {
-                    card.style.display = 'flex';
+            sections.forEach(sec => {
+                let secCatId = sec.getAttribute('data-category-section');
+                if (secCatId === selectedCatId) {
+                    sec.style.display = 'block';
                 } else {
-                    card.style.display = 'none';
+                    sec.style.display = 'none';
                 }
             });
         });
@@ -454,6 +466,5 @@ document.addEventListener("DOMContentLoaded", function() {
             }
         }
     }
-    // Cek setiap 30 detik
     setInterval(checkShiftAlert, 30000);
 });
